@@ -2,7 +2,7 @@
 
 namespace ShoppingList.Domain.Entities
 {
-    public class UnitofMaterial : BaseEntity
+    public class UnitOfMaterial : BaseEntity
     {
         public string Code { get; set; }
     }
