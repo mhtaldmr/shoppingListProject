@@ -17,5 +17,16 @@ namespace ShoppingList.Infrastructure.Persistence.DbContext
         public DbSet<ListCategory> ListCategories { get; set; }
         public DbSet<ListCategoryItem> ListCategoryItems { get; set; }
         public DbSet<UnitOfMaterial> UnitOfMaterials { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<ListCategoryItem>().HasKey(table => new {
+                table.ListCategoryId,
+                table.ItemId
+            });
+
+        }
     }
 }
