@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.ViewModels.Request.UserViewModels;
+using ShoppingList.Application.ViewModels.Response.MainResponse;
 using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Infrastructure.Services.UserServices
@@ -13,11 +14,12 @@ namespace ShoppingList.Infrastructure.Services.UserServices
         {
             _userManager = userManager;
         }
-        public async Task SignUp(UserSignUpViewModel signup)
+        public async Task<Result<UserSignUpViewModel>> SignUp(UserSignUpViewModel signup)
         {
             var user = await _userManager.FindByEmailAsync(signup.Email);
             if (user is not null)
-                throw new Exception("There is a user with this email!");
+                return Result.Fail(signup,"There is a user with this email!");
+                //throw new Exception("There is a user with this email!");
 
             var newUser = new User()
             {
@@ -31,8 +33,9 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             var IsCreated = await _userManager.CreateAsync(newUser, signup.Password);
 
             if (!IsCreated.Succeeded)
-                throw new Exception("User couldnt created!");
-
+                return Result.Fail(signup, IsCreated.Errors.Select(x => x.Description).FirstOrDefault());
+            //throw new Exception("User couldnt created!");
+            return Result.Success(signup, "Successful!");
         }
     }
 }

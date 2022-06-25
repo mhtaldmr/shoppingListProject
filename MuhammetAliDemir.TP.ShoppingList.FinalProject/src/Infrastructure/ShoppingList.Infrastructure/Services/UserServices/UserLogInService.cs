@@ -28,9 +28,9 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             var existingUser = await _userManager.FindByEmailAsync(login.Email);
 
             if (existingUser == null)
-                throw new Exception("User does not exist!");
+                throw new InvalidOperationException("User does not exist!");
             if (await _userManager.IsLockedOutAsync(existingUser))
-                throw new Exception("User is Locked");
+                throw new InvalidOperationException("User is Locked");
 
 
             var isCorrect = await _userManager.CheckPasswordAsync(existingUser, login.Password);
@@ -39,7 +39,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             if (!isCorrect)
             {
                 await _userManager.AccessFailedAsync(existingUser);
-                throw new Exception("Access Failed");
+                throw new InvalidOperationException("Access Failed");
             }
 
             await _signInManager.SignInAsync(existingUser, false);

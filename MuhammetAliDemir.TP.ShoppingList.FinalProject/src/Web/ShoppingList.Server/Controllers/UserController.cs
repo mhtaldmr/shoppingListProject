@@ -24,8 +24,9 @@ namespace ShoppingList.Server.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _signUpService.SignUp(signup);
-            return Ok();
+            
+            
+            return Ok(await _signUpService.SignUp(signup));
         }
 
 
