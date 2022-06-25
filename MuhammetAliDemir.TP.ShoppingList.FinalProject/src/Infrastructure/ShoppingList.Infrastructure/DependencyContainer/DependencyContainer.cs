@@ -1,7 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShoppingList.Application.Interfaces.Repositories;
+using ShoppingList.Application.Interfaces.UnitOfWork;
 using ShoppingList.Infrastructure.Persistence.DbContext;
+using ShoppingList.Infrastructure.Repositories;
+using ShoppingList.Infrastructure.UnitOfWorks;
 
 namespace ShoppingList.Infrastructure.DependencyContainer
 {
@@ -15,7 +19,9 @@ namespace ShoppingList.Infrastructure.DependencyContainer
 
 
             //Interface contracts
-        
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IListRepository, ListRepository>();
+
 
             return services;
         }
