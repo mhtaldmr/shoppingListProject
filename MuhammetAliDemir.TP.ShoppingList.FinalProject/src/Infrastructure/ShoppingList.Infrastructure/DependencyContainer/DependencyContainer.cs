@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
@@ -44,7 +45,9 @@ namespace ShoppingList.Infrastructure.DependencyContainer
                             opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(60);
                             opt.Lockout.MaxFailedAccessAttempts = 3;
                         })
-                    .AddEntityFrameworkStores<ShoppingListDbContext>();
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ShoppingListDbContext>()
+                    .AddDefaultTokenProviders();
 
 
 
@@ -70,6 +73,38 @@ namespace ShoppingList.Infrastructure.DependencyContainer
                         })
                     .AddJwtBearer(opt => opt.TokenValidationParameters = tokenValidationParameters);
 
+            //services.AddAuthorization( opt =>
+            //{
+            //    opt.
+            //});
+
+
+
+            //Swagger Authorization
+            services.AddSwaggerGen(opt =>
+            {
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "JWT Authentication",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                opt.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        { jwtSecurityScheme, Array.Empty<string>() }
+                    });
+            });
 
 
 
