@@ -19,4 +19,8 @@
     <ProjectReference Include="..\..\Core\ShoppingList.Application\ShoppingList.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UnitOfWork\" />
+  </ItemGroup>
+
 </Project>
