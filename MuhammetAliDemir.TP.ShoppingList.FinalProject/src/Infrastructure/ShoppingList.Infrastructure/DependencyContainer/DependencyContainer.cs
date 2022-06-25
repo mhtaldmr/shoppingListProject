@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
@@ -12,6 +14,7 @@ using ShoppingList.Infrastructure.Repositories;
 using ShoppingList.Infrastructure.Services.TokenServices;
 using ShoppingList.Infrastructure.Services.UserServices;
 using ShoppingList.Infrastructure.UnitOfWorks;
+using System.Text;
 
 namespace ShoppingList.Infrastructure.DependencyContainer
 {
@@ -42,6 +45,32 @@ namespace ShoppingList.Infrastructure.DependencyContainer
                             opt.Lockout.MaxFailedAccessAttempts = 3;
                         })
                     .AddEntityFrameworkStores<ShoppingListDbContext>();
+
+
+
+            //TokenValidationParameter Object
+            TokenValidationParameters tokenValidationParameters = new()
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidAudience = configuration["JWT:Audience"],
+                ValidIssuer = configuration["JWT:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                ClockSkew = TimeSpan.Zero
+            };
+
+            //JWT Bearer configurations
+            services.AddAuthentication(options =>
+                        {
+                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                        })
+                    .AddJwtBearer(opt => opt.TokenValidationParameters = tokenValidationParameters);
+
+
 
 
             return services;

@@ -25,9 +25,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
                 PasswordHash = signup.Password,
                 UserName = signup.UserName,
                 FirstName = signup.FirstName,
-                LastName = signup.LastName,
-                CreatedAt = DateTime.Now,
-                IsActive = true
+                LastName = signup.LastName
             };
 
             var IsCreated = await _userManager.CreateAsync(newUser, signup.Password);
