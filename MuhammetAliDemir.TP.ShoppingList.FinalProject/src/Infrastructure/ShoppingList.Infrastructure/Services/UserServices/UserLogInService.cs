@@ -46,9 +46,19 @@ namespace ShoppingList.Infrastructure.Services.UserServices
 
             var claims = new List<Claim>
             {
-                new Claim("Email", existingUser.Email),
+
+                new Claim("id", existingUser.Id),
+                new Claim(JwtRegisteredClaimNames.Email, existingUser.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, existingUser.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            // Add roles as multiple claims
+            foreach (var role in await _userManager.GetRolesAsync(existingUser))
+            {
+                if(role is not null)
+                    claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+            }
 
             await _signInManager.SignInAsync(existingUser, false);
 

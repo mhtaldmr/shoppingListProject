@@ -73,10 +73,10 @@ namespace ShoppingList.Infrastructure.DependencyContainer
                         })
                     .AddJwtBearer(opt => opt.TokenValidationParameters = tokenValidationParameters);
 
-            //services.AddAuthorization( opt =>
-            //{
-            //    opt.
-            //});
+            //Adding the authorization for role based.
+            services.AddAuthorization();
+
+
 
 
 
