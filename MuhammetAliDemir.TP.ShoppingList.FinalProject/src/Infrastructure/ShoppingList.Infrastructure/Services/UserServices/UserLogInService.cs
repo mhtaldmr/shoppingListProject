@@ -2,6 +2,8 @@
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.ViewModels.Request.UserViewModels;
+using ShoppingList.Application.ViewModels.Response.MainResponse;
+using ShoppingList.Application.ViewModels.Response.TokenViewModels;
 using ShoppingList.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,7 +23,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             _tokenService = tokenService;
         }
 
-        public async Task<object> LogIn(UserLogInViewModel login)
+        public async Task<Result<TokenResponseViewModel>> LogIn(UserLogInViewModel login)
         {
             var existingUser = await _userManager.FindByEmailAsync(login.Email);
 
@@ -51,8 +53,9 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             await _signInManager.SignInAsync(existingUser, false);
 
             var jwtToken = _tokenService.GetToken(claims);
-            
-            return new { token = jwtToken };
+
+
+            return Result.Success(jwtToken, "Token is generated!.");
 
         }
     }

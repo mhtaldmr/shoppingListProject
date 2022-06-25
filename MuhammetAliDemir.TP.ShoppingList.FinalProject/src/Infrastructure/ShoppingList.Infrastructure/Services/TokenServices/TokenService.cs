@@ -19,7 +19,7 @@ namespace ShoppingList.Infrastructure.Services.TokenServices
         public TokenResponseViewModel GetToken(List<Claim> claims)
         {
             var token = new TokenResponseViewModel();
-            token.Expiration = DateTime.Now.AddMinutes(5);
+            token.Expiration = DateTime.Now.AddHours(2);
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var signingCrendentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -28,7 +28,7 @@ namespace ShoppingList.Infrastructure.Services.TokenServices
                 signingCredentials: signingCrendentials,
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddHours(1),
                 claims: claims
                 );
 
