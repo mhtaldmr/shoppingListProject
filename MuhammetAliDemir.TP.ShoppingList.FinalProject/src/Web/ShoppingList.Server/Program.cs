@@ -1,9 +1,11 @@
+using ShoppingList.Application.DependencyContainer;
 using ShoppingList.Infrastructure.DependencyContainer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 
 

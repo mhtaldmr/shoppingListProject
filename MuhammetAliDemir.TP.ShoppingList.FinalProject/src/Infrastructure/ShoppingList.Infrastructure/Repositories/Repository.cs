@@ -5,7 +5,7 @@ using ShoppingList.Infrastructure.Persistence.DbContext;
 
 namespace ShoppingList.Infrastructure.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly ShoppingListDbContext _context;
 
@@ -31,7 +31,7 @@ namespace ShoppingList.Infrastructure.Repositories
 
         public async Task<IEnumerable<T>> GetAll() => await _context.Set<T>().ToListAsync();
 
-        public async Task<T> GetById(int id) => await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        public async Task<T> GetById(int id) => await _context.Set<T>().FindAsync(id);
 
     }
 }
