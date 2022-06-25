@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Interfaces.Repositories;
+using ShoppingList.Application.ViewModels.Request.UserViewModels;
 using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Server.Controllers
@@ -52,7 +53,7 @@ namespace ShoppingList.Server.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserLoginViewModel login)
+        public async Task<IActionResult> Login([FromBody] UserLogInViewModel login)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

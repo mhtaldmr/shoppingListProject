@@ -21,6 +21,7 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             //Interface contracts
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IListRepository, ListRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
 
             return services;

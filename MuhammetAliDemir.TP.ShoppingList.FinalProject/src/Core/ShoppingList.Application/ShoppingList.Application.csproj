@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ShoppingList.Domain\ShoppingList.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Response\" />
+  </ItemGroup>
+
 </Project>
