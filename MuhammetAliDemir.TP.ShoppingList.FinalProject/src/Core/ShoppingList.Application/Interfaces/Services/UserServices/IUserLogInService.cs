@@ -4,6 +4,6 @@ namespace ShoppingList.Application.Interfaces.Services.UserServices
 {
     public interface IUserLogInService
     {
-        Task LogIn(UserLogInViewModel login);
+        Task<object> LogIn(UserLogInViewModel login);
     }
 }

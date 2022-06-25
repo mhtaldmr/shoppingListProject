@@ -34,9 +34,8 @@ namespace ShoppingList.Server.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            await _logInService.LogIn(login);
-            return Ok();
+            
+            return Ok(await _logInService.LogIn(login));
         }
 
     }
