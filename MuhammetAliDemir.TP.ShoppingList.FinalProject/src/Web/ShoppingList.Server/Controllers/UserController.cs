@@ -24,11 +24,8 @@ namespace ShoppingList.Server.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            
-            
             return Ok(await _signUpService.SignUp(signup));
         }
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLogInViewModel login)

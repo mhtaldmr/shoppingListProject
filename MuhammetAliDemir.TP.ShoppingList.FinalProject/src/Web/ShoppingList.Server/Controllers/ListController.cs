@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Extensions;
 using ShoppingList.Application.Interfaces.Repositories;
@@ -14,25 +12,17 @@ namespace ShoppingList.Server.Controllers
     public class ListController : ControllerBase
     {
         private readonly IListRepository _repository;
-        private readonly UserManager<User> _userManager;
-        private readonly IMapper _mapper;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ListController(IListRepository repository, UserManager<User> userManager,IMapper mapper,RoleManager<IdentityRole> roleManager)
-        {
-            _repository = repository;
-            _userManager = userManager;
-            _mapper = mapper;
-            _roleManager = roleManager;
-        }
-
+        public ListController(IListRepository repository) => _repository = repository;
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateList([FromBody] ListCreateViewModel list)
+        public  IActionResult CreateList([FromBody] ListCreateViewModel list)
         {
             var newList = new List
             {
-                Description = list.Description, Title= list.Title, UserId= HttpContext.GetUserId()
+                Description = list.Description,
+                Title = list.Title,
+                UserId = HttpContext.GetUserId()
             };
 
             _repository.Create(newList);
