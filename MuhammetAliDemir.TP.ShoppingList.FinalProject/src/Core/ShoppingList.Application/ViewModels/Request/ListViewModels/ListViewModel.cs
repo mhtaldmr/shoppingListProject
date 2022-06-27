@@ -2,7 +2,7 @@
 
 namespace ShoppingList.Application.ViewModels.Request.ListViewModels
 {
-    public class ListCreateViewModel
+    public class ListViewModel
     {
         [Required]
         [StringLength(100)]
@@ -10,9 +10,7 @@ namespace ShoppingList.Application.ViewModels.Request.ListViewModels
         [Required]
         [StringLength(500)]
         public string Description { get; set; }
-
         public int CategoryId { get; set; } = 1;
-
-        public ICollection<ItemViewModel> ItemViewModel { get; set; }
+        public ICollection<ListItemViewModel> ListItemViewModel { get; set; }
     }
 }

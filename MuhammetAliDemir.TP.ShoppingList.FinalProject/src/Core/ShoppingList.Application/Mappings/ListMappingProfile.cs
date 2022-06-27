@@ -9,9 +9,9 @@ namespace ShoppingList.Application.Mappings
         public ListMappingProfile()
         {
 
-            CreateMap<ItemViewModel, Item>();
-            CreateMap<ListCreateViewModel, List>()
-                .ForMember(x => x.Items, opt => opt.MapFrom(z => z.ItemViewModel));
+            CreateMap<ListItemViewModel, Item>();
+            CreateMap<ListViewModel, List>()
+                .ForMember(x => x.Items, opt => opt.MapFrom(z => z.ListItemViewModel));
 
         }
     }

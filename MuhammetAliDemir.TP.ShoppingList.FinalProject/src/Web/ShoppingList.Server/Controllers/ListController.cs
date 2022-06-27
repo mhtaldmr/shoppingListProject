@@ -10,6 +10,7 @@ namespace ShoppingList.Server.Controllers
 {
     [Route("/lists")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
     public class ListController : ControllerBase
     {
         private readonly IListRepository _repository;
@@ -24,85 +25,63 @@ namespace ShoppingList.Server.Controllers
             _context = context;
         }
 
-        [HttpPost("create")]
-        public IActionResult CreateList([FromBody] ListCreateViewModel list)
+        [HttpGet]
+        public async Task<IActionResult> GetAllLists()
         {
-            var result = _mapper.Map<ListCreateViewModel, List>(list);
-            result.UserId = "b1248f2a-99b0-4071-8a6e-60fad489cf02";//HttpContext.GetUserId();
+            return Ok(await _repository.GetAll());
+        }
 
-            _repository.Create(result);
-            return Ok(result);
+        [HttpPost("create")]
+        public IActionResult CreateList([FromBody] ListViewModel list)
+        {
+            var listToAdd = _mapper.Map<ListViewModel, List>(list);
+            listToAdd.UserId = "9cecb3b1-a4f1-45fa-883d-5873d86d4f5a";//HttpContext.GetUserId();
+
+            _repository.Create(listToAdd);
+            return Ok(listToAdd);
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateList([FromBody] ListCreateViewModel list, int id)
+        public async Task<IActionResult> UpdateList([FromBody] ListViewModel list, int id)
         {
             var listToUpdate = await _repository.GetById(id);
             _ = _context.Items.Where(z => z.ListId == id).ToList();
 
             if (listToUpdate is null)
-                return NotFound();
+                return NotFound($"This List with id = {id} doesnt exist!");
 
-            var result = _mapper.Map<ListCreateViewModel, List>(list);
-
-            listToUpdate.CategoryId = result.CategoryId;
-            listToUpdate.Description = result.Description;
-            listToUpdate.Title = result.Title;
-            listToUpdate.CreatedAt = listToUpdate.CreatedAt;
-            listToUpdate.CompletedAt = listToUpdate.CompletedAt;
+            listToUpdate.CategoryId = list.CategoryId;
+            listToUpdate.Description = list.Description;
+            listToUpdate.Title = list.Title;
             listToUpdate.UpdatedAt = DateTime.Now;
-            listToUpdate.Items = result.Items.Select(z =>
-                new Item { Name = z.Name, Quantity = z.Quantity, UoMId = z.UoMId, IsChecked = z.IsChecked, CreatedAt = z.CreatedAt, UpdatedAt = DateTime.Now }).ToList();
 
+            foreach (var item in listToUpdate.Items)
+            {
+                var itemToChange = list.ListItemViewModel.SingleOrDefault(a => a.Name == item.Name);
+                if (itemToChange != null && item.Name == itemToChange.Name)
+                {
+                    item.Name = itemToChange.Name;
+                    item.Quantity = itemToChange.Quantity;
+                    item.UoMId = itemToChange.UoMId;
+                    item.IsChecked = itemToChange.IsChecked;
+                    item.UpdatedAt = DateTime.Now;
+                }
+            }
             _repository.Update(listToUpdate);
             return Ok(listToUpdate);
         }
 
 
-        [HttpDelete("/delete")]
-        public async Task<IActionResult> DeleteList([FromQuery] int id)
-        {
-            var listToDelete = await _repository.GetById(id);
-            if (listToDelete is null)
-                return NotFound();
-
-            _repository.Delete(listToDelete);
-            return NoContent();
-        }
-
-        [HttpPatch("/lists/item/{id}")]
-        public async Task<IActionResult> DriverWithJsonPatch(int id, [FromBody] JsonPatchDocument<Item> listToPatch)
-        {
-            var listToUpdate = await _repository.GetById(id);
-            var items = _context.Items.Where(z => z.ListId == id).FirstOrDefault();
-
-            if (listToUpdate is null)
-                return NotFound($"This driver with id = {id} doesnt exist in the list!");
-
-            //To apply the changes
-            listToPatch.ApplyTo(items);
-
-            listToUpdate.UpdatedAt = DateTime.Now;
-            listToUpdate.Items = listToUpdate.Items.Select(z =>
-                            new Item { Name = z.Name, Quantity = z.Quantity, UoMId = z.UoMId, IsChecked = z.IsChecked, CreatedAt = z.CreatedAt, UpdatedAt = DateTime.Now }).ToList();
-
-
-            _repository.Update(listToUpdate);
-            return Ok(listToUpdate); //Http 200
-        }
-
-
-
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateDriverWithJsonPatch(int id, [FromBody] JsonPatchDocument<List> listToPatch)
+        public async Task<IActionResult> UpdateListByJsonPatch(int id, [FromBody] JsonPatchDocument<List> list)
         {
             var listToUpdate = await _repository.GetById(id);
 
             if (listToUpdate is null)
-                return NotFound($"This driver with id = {id} doesnt exist in the list!");
+                return NotFound($"This List with id = {id} doesnt exist!");
 
             //To apply the changes
-            listToPatch.ApplyTo(listToUpdate);
+            list.ApplyTo(listToUpdate);
 
             listToUpdate.UpdatedAt = DateTime.Now;
             listToUpdate.CompletedAt = DateTime.Now;
@@ -112,13 +91,16 @@ namespace ShoppingList.Server.Controllers
         }
 
 
-
-        [HttpGet]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllLists()
+        [HttpDelete("/delete")]
+        public async Task<IActionResult> DeleteList([FromQuery] int id)
         {
-            return Ok(await _repository.GetAll());
-        }
+            var listToDelete = await _repository.GetById(id);
 
+            if (listToDelete is null)
+                return NotFound($"This List with id = {id} doesnt exist!");
+
+            _repository.Delete(listToDelete);
+            return NoContent();
+        }
     }
 }
