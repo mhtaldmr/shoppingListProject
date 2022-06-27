@@ -8,7 +8,6 @@ namespace ShoppingList.Application.Interfaces.DbContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<List> Lists { get; set; }
-        public DbSet<ListItem> ListItems { get; set; }
         public DbSet<UnitOfMaterial> UnitOfMaterials { get; set; }
     }
 }

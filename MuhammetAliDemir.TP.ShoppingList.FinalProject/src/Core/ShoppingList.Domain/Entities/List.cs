@@ -13,10 +13,10 @@ namespace ShoppingList.Domain.Entities
         [ForeignKey("UserId")]
         public User User { get; set; }
 
-        public int CategoryId { get; set; }
+        public int CategoryId { get; set; } = 1;
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-
+        public virtual ICollection<Item> Items { get; set; }
     }
 }

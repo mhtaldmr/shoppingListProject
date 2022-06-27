@@ -168,7 +168,6 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -199,24 +198,35 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsChecked")
                         .HasColumnType("bit");
+
+                    b.Property<int>("ListId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UoMId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListId");
+
+                    b.HasIndex("UoMId");
 
                     b.ToTable("Items");
                 });
@@ -230,15 +240,17 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
@@ -256,82 +268,27 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Lists");
-                });
-
-            modelBuilder.Entity("ShoppingList.Domain.Entities.ListCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ListId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ListId");
-
-                    b.ToTable("ListCategories");
-                });
-
-            modelBuilder.Entity("ShoppingList.Domain.Entities.ListCategoryItem", b =>
-                {
-                    b.Property<int>("ListCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UnitOfMaterialId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ListCategoryId", "ItemId");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("UnitOfMaterialId");
-
-                    b.ToTable("ListCategoryItems");
                 });
 
             modelBuilder.Entity("ShoppingList.Domain.Entities.UnitOfMaterial", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UoMCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -468,18 +425,26 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShoppingList.Domain.Entities.List", b =>
+            modelBuilder.Entity("ShoppingList.Domain.Entities.Item", b =>
                 {
-                    b.HasOne("ShoppingList.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("ShoppingList.Domain.Entities.List", "List")
+                        .WithMany("Items")
+                        .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("ShoppingList.Domain.Entities.UnitOfMaterial", "UoM")
+                        .WithMany()
+                        .HasForeignKey("UoMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("List");
+
+                    b.Navigation("UoM");
                 });
 
-            modelBuilder.Entity("ShoppingList.Domain.Entities.ListCategory", b =>
+            modelBuilder.Entity("ShoppingList.Domain.Entities.List", b =>
                 {
                     b.HasOne("ShoppingList.Domain.Entities.Category", "Category")
                         .WithMany()
@@ -487,42 +452,25 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoppingList.Domain.Entities.List", "List")
-                        .WithMany()
-                        .HasForeignKey("ListId")
+                    b.HasOne("ShoppingList.Domain.Entities.User", "User")
+                        .WithMany("Lists")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
 
-                    b.Navigation("List");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoppingList.Domain.Entities.ListCategoryItem", b =>
+            modelBuilder.Entity("ShoppingList.Domain.Entities.List", b =>
                 {
-                    b.HasOne("ShoppingList.Domain.Entities.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Items");
+                });
 
-                    b.HasOne("ShoppingList.Domain.Entities.ListCategory", "ListCategory")
-                        .WithMany()
-                        .HasForeignKey("ListCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShoppingList.Domain.Entities.UnitOfMaterial", "UnitOfMaterial")
-                        .WithMany()
-                        .HasForeignKey("UnitOfMaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("ListCategory");
-
-                    b.Navigation("UnitOfMaterial");
+            modelBuilder.Entity("ShoppingList.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Lists");
                 });
 #pragma warning restore 612, 618
         }

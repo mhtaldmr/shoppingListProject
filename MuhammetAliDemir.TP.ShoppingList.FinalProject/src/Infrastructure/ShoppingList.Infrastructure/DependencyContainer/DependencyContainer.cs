@@ -107,6 +107,9 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             });
 
 
+            //Json cycle ignore
+            services.AddControllersWithViews().AddNewtonsoftJson(
+                opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             return services;
         }
