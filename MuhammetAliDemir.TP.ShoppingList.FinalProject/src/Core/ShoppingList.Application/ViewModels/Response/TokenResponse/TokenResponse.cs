@@ -1,6 +1,6 @@
-﻿namespace ShoppingList.Application.ViewModels.Response.TokenViewModels
+﻿namespace ShoppingList.Application.ViewModels.Response.TokenResponse
 {
-    public class TokenResponseViewModel
+    public class TokenResponse
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

@@ -16,9 +16,9 @@ namespace ShoppingList.Infrastructure.Services.TokenServices
             _configuration = configuration;
         }
 
-        public TokenResponseViewModel GetToken(List<Claim> claims)
+        public TokenResponse GetToken(List<Claim> claims)
         {
-            var token = new TokenResponseViewModel();
+            var token = new TokenResponse();
             token.Expiration = DateTime.Now.AddHours(2);
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));

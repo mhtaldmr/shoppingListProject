@@ -3,7 +3,7 @@ using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.ViewModels.Request.UserViewModels;
 using ShoppingList.Application.ViewModels.Response.MainResponse;
-using ShoppingList.Application.ViewModels.Response.TokenViewModels;
+using ShoppingList.Application.ViewModels.Response.TokenResponse;
 using ShoppingList.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,7 +23,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             _tokenService = tokenService;
         }
 
-        public async Task<Result<TokenResponseViewModel>> LogIn(UserLogInViewModel login)
+        public async Task<Result<TokenResponse>> LogIn(UserLogInViewModel login)
         {
             var existingUser = await _userManager.FindByEmailAsync(login.Email);
 
@@ -56,7 +56,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             // Add roles as multiple claims
             foreach (var role in await _userManager.GetRolesAsync(existingUser))
             {
-                if(role is not null)
+                if (role is not null)
                     claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
             }
 

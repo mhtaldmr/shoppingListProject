@@ -1,11 +1,10 @@
-﻿using ShoppingList.Application.ViewModels.Response.MainResponse;
-using ShoppingList.Application.ViewModels.Response.TokenViewModels;
+﻿using ShoppingList.Application.ViewModels.Response.TokenResponse;
 using System.Security.Claims;
 
 namespace ShoppingList.Application.Interfaces.Services.TokenServices
 {
     public interface ITokenService
     {
-        TokenResponseViewModel GetToken(List<Claim> claims);
+        TokenResponse GetToken(List<Claim> claims);
     }
 }
