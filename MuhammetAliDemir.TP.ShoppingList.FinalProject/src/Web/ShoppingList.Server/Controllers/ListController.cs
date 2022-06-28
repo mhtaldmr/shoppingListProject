@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Extensions;
 using ShoppingList.Application.Features.ListFeatures.Commands.Create;
+using ShoppingList.Application.Features.ListFeatures.Queries.GetAll;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetById;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
@@ -31,14 +32,15 @@ namespace ShoppingList.Server.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetAllLists()
-            => Ok(await _repository.GetAll());
+            => Ok(await _mediator.Send(new GetAllListsQuery()));
 
 
-        [HttpGet("/getbyid")]
-        public async Task<IActionResult> GetListById([FromQuery] GetListByIdQuery query)
-            => Ok(await _mediator.Send(query));
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetListById(int id)
+            => Ok(await _mediator.Send(new GetListByIdQuery() { Id = id }));
 
 
         [HttpPost("create")]
@@ -65,7 +67,7 @@ namespace ShoppingList.Server.Controllers
 
             foreach (var item in listToUpdate.Items)
             {
-                var itemToChange = list.ListItems.SingleOrDefault(a => a.Name == item.Name);
+                var itemToChange = list.Items.SingleOrDefault(a => a.Name == item.Name);
                 if (itemToChange != null && item.Name == itemToChange.Name)
                 {
                     item.Name = itemToChange.Name;

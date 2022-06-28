@@ -14,24 +14,16 @@ namespace ShoppingList.Application.Mappings
             CreateMap<ListItemViewModel, Item>().ReverseMap();
 
             //Mapping the user input to domain
-            CreateMap<ListViewModel, List>()
-                .ForMember(x => x.Items, opt => opt.MapFrom(z => z.ListItems));
-
+            CreateMap<ListViewModel, List>().ReverseMap();
 
             //Mapping the domain to user response
-            CreateMap<List, GetListResponse>()
-                .ForMember(x => x.ListItems, opt => opt.MapFrom(z => z.Items));
+            CreateMap<List, GetListResponse>().ReverseMap();
 
             //Mapping the user input to domain
-            CreateMap<ListItemViewModel, Item>().ReverseMap();
-            CreateMap<CreateListCommand, List>()
-                .ForMember(x => x.Items, opt => opt.MapFrom(z => z.ListItems));
-
-            //Map
-            CreateMap<ListItemViewModel, Item>().ReverseMap();
-            CreateMap<ListViewModel, CreateListCommand > ()
-                .ForMember(x => x.ListItems, opt => opt.MapFrom(z => z.ListItems));
-
+            CreateMap<CreateListCommand, List>().ReverseMap();
+            
+            //Map the user view model into command
+            CreateMap<ListViewModel, CreateListCommand>();
         }
     }
 }
