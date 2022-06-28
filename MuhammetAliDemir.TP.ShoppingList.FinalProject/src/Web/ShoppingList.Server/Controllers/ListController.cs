@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Extensions;
 using ShoppingList.Application.Features.ListFeatures.Commands.Create;
 using ShoppingList.Application.Features.ListFeatures.Commands.Delete;
+using ShoppingList.Application.Features.ListFeatures.Commands.Update;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetAll;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetById;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
 using ShoppingList.Domain.Entities;
-using ShoppingList.Infrastructure.Persistence.DbContext;
 
 namespace ShoppingList.Server.Controllers
 {
@@ -20,15 +20,12 @@ namespace ShoppingList.Server.Controllers
     public class ListController : ControllerBase
     {
         private readonly IListRepository _repository;
-
-        private readonly ShoppingListDbContext _context;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public ListController(IListRepository repository, ShoppingListDbContext context, IMediator mediator, IMapper mapper)
+        public ListController(IListRepository repository, IMediator mediator, IMapper mapper)
         {
             _repository = repository;
-            _context = context;
             _mediator = mediator;
             _mapper = mapper;
         }
@@ -44,13 +41,18 @@ namespace ShoppingList.Server.Controllers
             => Ok(await _mediator.Send(new GetListByIdQuery() { Id = id }));
 
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateList([FromBody] ListViewModel command)
         {
             var result = _mapper.Map<ListViewModel, CreateListCommand>(command);
             result.UserId = HttpContext.GetUserId();
             return Ok(await _mediator.Send(result));
         }
+
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateList([FromBody] UpdateListCommand command)
+            => Ok(await _mediator.Send(command));
 
 
         [HttpDelete("{id}")]
@@ -60,35 +62,10 @@ namespace ShoppingList.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateList([FromBody] ListViewModel list, int id)
-        {
-            var listToUpdate = await _repository.GetById(id);
-            _ = _context.Items.Where(z => z.ListId == id).ToList();
 
-            if (listToUpdate is null)
-                return NotFound($"This List with id = {id} doesnt exist!");
 
-            listToUpdate.CategoryId = list.CategoryId;
-            listToUpdate.Description = list.Description;
-            listToUpdate.Title = list.Title;
-            listToUpdate.UpdatedAt = DateTime.Now;
 
-            foreach (var item in listToUpdate.Items)
-            {
-                var itemToChange = list.Items.SingleOrDefault(a => a.Name == item.Name);
-                if (itemToChange != null && item.Name == itemToChange.Name)
-                {
-                    item.Name = itemToChange.Name;
-                    item.Quantity = itemToChange.Quantity;
-                    item.UoMId = itemToChange.UoMId;
-                    item.IsChecked = itemToChange.IsChecked;
-                    item.UpdatedAt = DateTime.Now;
-                }
-            }
-            _repository.Update(listToUpdate);
-            return Ok(listToUpdate);
-        }
+
 
 
         [HttpPatch("{id}")]

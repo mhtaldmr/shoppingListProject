@@ -12,6 +12,7 @@ namespace ShoppingList.Application.Mappings
         {
             //Mapping the items in the lists
             CreateMap<ListItemViewModel, Item>().ReverseMap();
+            CreateMap<ListItemActionViewModel, Item>().ReverseMap();
 
             //Mapping the user input to domain
             CreateMap<ListViewModel, List>().ReverseMap();
@@ -23,7 +24,7 @@ namespace ShoppingList.Application.Mappings
             CreateMap<CreateListCommand, List>().ReverseMap();
             
             //Map the user view model into command
-            CreateMap<ListViewModel, CreateListCommand>();
+            CreateMap<ListViewModel, CreateListCommand>().ReverseMap();
         }
     }
 }

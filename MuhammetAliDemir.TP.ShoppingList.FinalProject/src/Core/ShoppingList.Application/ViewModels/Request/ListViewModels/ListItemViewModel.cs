@@ -7,4 +7,9 @@
         public int UoMId { get; set; } = 1;
         public bool IsChecked { get; set; } = false;
     }
+
+    public class ListItemActionViewModel : ListItemViewModel
+    {
+        public int Id { get; set; }
+    }
 }
