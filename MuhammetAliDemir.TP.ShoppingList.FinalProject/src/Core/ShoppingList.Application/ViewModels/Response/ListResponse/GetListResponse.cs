@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoppingList.Application.ViewModels.Response.ListResponse
 {
-    public class GetListByIdResponse
+    public class GetListResponse
     {
         public string Title { get; set; }
         public string Description { get; set; }

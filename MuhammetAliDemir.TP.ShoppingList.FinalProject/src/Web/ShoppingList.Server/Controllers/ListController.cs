@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingList.Application.Extensions;
+using ShoppingList.Application.Features.ListFeatures.Commands.Create;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetById;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
@@ -17,40 +19,34 @@ namespace ShoppingList.Server.Controllers
     {
         private readonly IListRepository _repository;
 
-        private readonly IMapper _mapper;
         private readonly ShoppingListDbContext _context;
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public ListController(IListRepository repository, IMapper mapper, ShoppingListDbContext context,IMediator mediator)
+        public ListController(IListRepository repository, ShoppingListDbContext context, IMediator mediator, IMapper mapper)
         {
             _repository = repository;
-            _mapper = mapper;
             _context = context;
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllLists()
-        {
-            return Ok(await _repository.GetAll());
-        }
+            => Ok(await _repository.GetAll());
+
 
         [HttpGet("/getbyid")]
         public async Task<IActionResult> GetListById([FromQuery] GetListByIdQuery query)
-        {
-            return Ok(await _mediator.Send(query));
-        }
-
+            => Ok(await _mediator.Send(query));
 
 
         [HttpPost("create")]
-        public IActionResult CreateList([FromBody] ListViewModel list)
+        public async Task<IActionResult> CreateList([FromBody] ListViewModel command)
         {
-            var listToAdd = _mapper.Map<ListViewModel, List>(list);
-            listToAdd.UserId = "9cecb3b1-a4f1-45fa-883d-5873d86d4f5a";//HttpContext.GetUserId();
-
-            _repository.Create(listToAdd);
-            return Ok(listToAdd);
+            var result = _mapper.Map<ListViewModel, CreateListCommand>(command);
+            result.UserId = HttpContext.GetUserId();
+            return Ok(await _mediator.Send(result));
         }
 
         [HttpPut("update/{id}")]
@@ -110,7 +106,7 @@ namespace ShoppingList.Server.Controllers
 
             if (listToDelete is null)
                 return NotFound($"This List with id = {id} doesnt exist!");
-
+            
             _repository.Delete(listToDelete);
             return NoContent();
         }

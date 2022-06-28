@@ -7,12 +7,12 @@ using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Application.Features.ListFeatures.Queries.GetById
 {
-    public class GetListByIdQuery : IRequest<Result<GetListByIdResponse>>
+    public class GetListByIdQuery : IRequest<Result<GetListResponse>>
     {
         public int Id { get; set; }
     }
 
-    public class GetListByIdQueryHandler : IRequestHandler<GetListByIdQuery, Result<GetListByIdResponse>>
+    public class GetListByIdQueryHandler : IRequestHandler<GetListByIdQuery, Result<GetListResponse>>
     {
         private readonly IListRepository _repository;
         private readonly IMapper _mapper;
@@ -23,13 +23,13 @@ namespace ShoppingList.Application.Features.ListFeatures.Queries.GetById
             _mapper = mapper;
         }
 
-        public async Task<Result<GetListByIdResponse>> Handle(GetListByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetListResponse>> Handle(GetListByIdQuery request, CancellationToken cancellationToken)
         {
             var list = await _repository.GetListByIdWithItem(request.Id);
             if (list is null)
-                throw new KeyNotFoundException();
+                return Result.Fail(new GetListResponse(), new KeyNotFoundException().Message);
 
-            var result = _mapper.Map<List, GetListByIdResponse>(list);
+            var result = _mapper.Map<List, GetListResponse>(list);
             return Result.Success(result, "Successful");
         }
     }
