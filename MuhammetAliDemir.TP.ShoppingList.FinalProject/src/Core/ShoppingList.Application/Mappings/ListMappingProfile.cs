@@ -10,7 +10,7 @@ namespace ShoppingList.Application.Mappings
         public ListMappingProfile()
         {
             //Mapping the items in the lists
-            CreateMap<ListItemViewModel, Item>();
+            CreateMap<ListItemViewModel, Item>().ReverseMap();
 
             //Mapping the user input to domain
             CreateMap<ListViewModel, List>()
