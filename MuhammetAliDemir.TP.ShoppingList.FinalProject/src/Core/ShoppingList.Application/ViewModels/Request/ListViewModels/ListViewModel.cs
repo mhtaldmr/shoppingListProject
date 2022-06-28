@@ -11,6 +11,6 @@ namespace ShoppingList.Application.ViewModels.Request.ListViewModels
         [StringLength(500)]
         public string Description { get; set; }
         public int CategoryId { get; set; } = 1;
-        public ICollection<ListItemViewModel> ListItemViewModel { get; set; }
+        public ICollection<ListItemViewModel> ListItems { get; set; }
     }
 }
