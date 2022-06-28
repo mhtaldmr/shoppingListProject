@@ -30,12 +30,12 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Create
         public async Task<Result<GetListResponse>> Handle(CreateListCommand request, CancellationToken cancellationToken)
         {
             //mapping the request model to domain model
-            var listToAdd = _mapper.Map<List>(request);
+            var list = _mapper.Map<List>(request);
             //create the list
-            _repository.Create(listToAdd);
+            await _repository.Create(list);
 
             //returning the user response
-            var result = _mapper.Map<GetListResponse>(listToAdd);
+            var result = _mapper.Map<GetListResponse>(list);
             return Result.Success(result, "Successful");
         }
     }

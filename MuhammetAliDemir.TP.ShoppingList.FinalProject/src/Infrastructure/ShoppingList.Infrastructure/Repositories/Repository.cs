@@ -11,22 +11,22 @@ namespace ShoppingList.Infrastructure.Repositories
 
         public Repository(ShoppingListDbContext context) => _context = context;
 
-        public void Create(T entity)
+        public async Task Create(T entity)
         {
             _context.Set<T>().Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             _context.Set<T>().Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(T entity)
+        public async Task Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAll() => await _context.Set<T>().ToListAsync();

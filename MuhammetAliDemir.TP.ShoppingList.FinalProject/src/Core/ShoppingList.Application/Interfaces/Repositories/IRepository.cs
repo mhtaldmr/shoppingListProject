@@ -4,8 +4,8 @@
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task Create(T entity);
+        Task Update(T entity);
+        Task Delete(T entity);
     }
 }

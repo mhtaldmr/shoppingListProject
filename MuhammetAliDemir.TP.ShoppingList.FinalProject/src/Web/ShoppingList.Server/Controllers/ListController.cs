@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Extensions;
 using ShoppingList.Application.Features.ListFeatures.Commands.Create;
+using ShoppingList.Application.Features.ListFeatures.Commands.Delete;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetAll;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetById;
 using ShoppingList.Application.Interfaces.Repositories;
@@ -49,6 +50,14 @@ namespace ShoppingList.Server.Controllers
             var result = _mapper.Map<ListViewModel, CreateListCommand>(command);
             result.UserId = HttpContext.GetUserId();
             return Ok(await _mediator.Send(result));
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteList(int id)
+        {
+            await _mediator.Send(new DeleteListCommand() { Id = id });
+            return NoContent();
         }
 
         [HttpPut("update/{id}")]
@@ -101,16 +110,5 @@ namespace ShoppingList.Server.Controllers
         }
 
 
-        [HttpDelete("/delete")]
-        public async Task<IActionResult> DeleteList([FromQuery] int id)
-        {
-            var listToDelete = await _repository.GetById(id);
-
-            if (listToDelete is null)
-                return NotFound($"This List with id = {id} doesnt exist!");
-            
-            _repository.Delete(listToDelete);
-            return NoContent();
-        }
     }
 }
