@@ -10,9 +10,16 @@ namespace ShoppingList.Application.DependencyContainer
         {
             //Mapper added to container
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            
+
             //Mediatr added to container
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            //DistributedCaching //Redis
+            services.AddStackExchangeRedisCache(opt =>
+            {
+                opt.Configuration = "localhost:6379";
+                opt.InstanceName = "RedisCacheServer";
+            });
 
             return services;
         }
