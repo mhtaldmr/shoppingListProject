@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -20,6 +21,10 @@ namespace ShoppingList.Application.DependencyContainer
                 opt.Configuration = "localhost:6379";
                 opt.InstanceName = "RedisCacheServer";
             });
+
+            //FluentValidation
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
 
             return services;
         }
