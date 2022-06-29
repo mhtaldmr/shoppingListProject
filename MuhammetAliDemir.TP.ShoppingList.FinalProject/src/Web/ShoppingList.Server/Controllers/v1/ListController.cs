@@ -10,7 +10,7 @@ using ShoppingList.Application.ViewModels.Request.ListViewModels;
 
 namespace ShoppingList.Server.Controllers.v1
 {
-    [Route("/lists")]
+    [Route("api/lists")]
     [ApiController]
     //[Authorize(Roles = "Admin")]
     public class ListController : BaseApiController

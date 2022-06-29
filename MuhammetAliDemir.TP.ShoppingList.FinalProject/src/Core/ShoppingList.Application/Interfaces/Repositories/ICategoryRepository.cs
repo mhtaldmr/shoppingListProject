@@ -2,8 +2,7 @@
 
 namespace ShoppingList.Application.Interfaces.Repositories
 {
-    public interface IItemRepository : IRepository<Item>
+    public interface ICategoryRepository : IRepository<Category>
     {
-        Task<IEnumerable<Item>> GetItemsByListId(int id);
     }
 }

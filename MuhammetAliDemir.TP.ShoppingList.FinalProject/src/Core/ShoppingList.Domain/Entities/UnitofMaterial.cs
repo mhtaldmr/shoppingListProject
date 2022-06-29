@@ -2,10 +2,8 @@
 
 namespace ShoppingList.Domain.Entities
 {
-    public class UnitOfMaterial
+    public class UnitOfMaterial : BaseEntity
     {
-        public int Id { get; set; }
         public string UoMCode { get; set; }
-        public string? Description { get; set; }
     }
 }

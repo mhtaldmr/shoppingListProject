@@ -10,12 +10,12 @@ namespace ShoppingList.Application.Features.ListFeatures.Queries.GetAll
     {
     }
 
-    public class GetAllLİstsQueryHandler : IRequestHandler<GetAllListsQuery, Result<ICollection<GetListResponse>>>
+    public class GetAllListsQueryHandler : IRequestHandler<GetAllListsQuery, Result<ICollection<GetListResponse>>>
     {
         private readonly IListRepository _repository;
         private readonly IMapper _mapper;
 
-        public GetAllLİstsQueryHandler(IListRepository repository, IMapper mapper)
+        public GetAllListsQueryHandler(IListRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
