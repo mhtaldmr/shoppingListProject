@@ -32,7 +32,6 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             if (await _userManager.IsLockedOutAsync(existingUser))
                 throw new InvalidOperationException("User is Locked");
 
-
             var isCorrect = await _userManager.CheckPasswordAsync(existingUser, login.Password);
             await _signInManager.CheckPasswordSignInAsync(existingUser, login.Password, false);
 
@@ -46,7 +45,6 @@ namespace ShoppingList.Infrastructure.Services.UserServices
 
             var claims = new List<Claim>
             {
-
                 new Claim("id", existingUser.Id),
                 new Claim(JwtRegisteredClaimNames.Email, existingUser.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, existingUser.Email),
@@ -64,9 +62,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
 
             var jwtToken = _tokenService.GetToken(claims);
 
-
             return Result.Success(jwtToken, "Token is generated!.");
-
         }
     }
 }

@@ -40,9 +40,9 @@ namespace ShoppingList.Server.Controllers.v1
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateList([FromBody] ListViewModel command)
+        public async Task<IActionResult> CreateList([FromBody] ListCreateViewModel command)
         {
-            var result = Mapper.Map<ListViewModel, CreateListCommand>(command);
+            var result = Mapper.Map<ListCreateViewModel, CreateListCommand>(command);
             result.UserId = HttpContext.GetUserId();
             return Ok(await Mediator.Send(result));
         }

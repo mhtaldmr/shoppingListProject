@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using ShoppingList.Application.Behaviours;
 using System.Reflection;
 
 namespace ShoppingList.Application.DependencyContainer
@@ -9,6 +10,12 @@ namespace ShoppingList.Application.DependencyContainer
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            //FluentValidation
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+
+
             //Mapper added to container
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -21,9 +28,6 @@ namespace ShoppingList.Application.DependencyContainer
                 opt.Configuration = "localhost:6379";
                 opt.InstanceName = "RedisCacheServer";
             });
-
-            //FluentValidation
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 
             return services;
