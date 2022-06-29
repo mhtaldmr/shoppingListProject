@@ -1,5 +1,5 @@
 ﻿using ShoppingList.Application.ViewModels.Request.UserViewModels;
-using ShoppingList.Application.ViewModels.Response.MainResponse;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 
 namespace ShoppingList.Application.Interfaces.Services.UserServices
 {

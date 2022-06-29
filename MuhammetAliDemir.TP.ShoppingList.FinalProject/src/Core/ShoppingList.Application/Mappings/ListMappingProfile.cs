@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ShoppingList.Application.Features.ListFeatures.Commands.Create;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
-using ShoppingList.Application.ViewModels.Response.ListResponse;
+using ShoppingList.Application.ViewModels.Response.ListResponses;
 using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Application.Mappings
@@ -22,9 +22,10 @@ namespace ShoppingList.Application.Mappings
 
             //Mapping the user input to domain
             CreateMap<CreateListCommand, List>().ReverseMap();
-            
+
             //Map the user view model into command
             CreateMap<ListViewModel, CreateListCommand>().ReverseMap();
+
         }
     }
 }

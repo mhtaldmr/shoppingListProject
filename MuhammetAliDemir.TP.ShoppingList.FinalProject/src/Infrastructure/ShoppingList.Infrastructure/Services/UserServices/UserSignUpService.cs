@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.ViewModels.Request.UserViewModels;
-using ShoppingList.Application.ViewModels.Response.MainResponse;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Infrastructure.Services.UserServices

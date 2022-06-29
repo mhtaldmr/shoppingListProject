@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.Application.ViewModels.Request.FilterViewModel
+﻿namespace ShoppingList.Application.ViewModels.Request.FilterViewModels
 {
     public class FilterViewModel
     {

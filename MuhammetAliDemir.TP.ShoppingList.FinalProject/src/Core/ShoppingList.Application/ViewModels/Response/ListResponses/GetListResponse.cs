@@ -1,6 +1,6 @@
 ﻿using ShoppingList.Application.ViewModels.Request.ListViewModels;
 
-namespace ShoppingList.Application.ViewModels.Response.ListResponse
+namespace ShoppingList.Application.ViewModels.Response.ListResponses
 {
     public class GetListResponse
     {

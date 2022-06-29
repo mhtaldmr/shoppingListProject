@@ -2,8 +2,8 @@
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.ViewModels.Request.UserViewModels;
-using ShoppingList.Application.ViewModels.Response.MainResponse;
-using ShoppingList.Application.ViewModels.Response.TokenResponse;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
+using ShoppingList.Application.ViewModels.Response.TokenResponses;
 using ShoppingList.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

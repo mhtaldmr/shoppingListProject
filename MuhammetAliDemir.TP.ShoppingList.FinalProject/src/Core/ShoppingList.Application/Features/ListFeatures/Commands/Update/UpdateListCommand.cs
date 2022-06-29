@@ -2,8 +2,8 @@
 using MediatR;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
-using ShoppingList.Application.ViewModels.Response.ListResponse;
-using ShoppingList.Application.ViewModels.Response.MainResponse;
+using ShoppingList.Application.ViewModels.Response.ListResponses;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
 {

@@ -1,4 +1,6 @@
-﻿using ShoppingList.Domain.Entities;
+﻿using ShoppingList.Application.ViewModels.Request.FilterViewModels;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
+using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Application.Interfaces.Repositories
 {
@@ -6,5 +8,6 @@ namespace ShoppingList.Application.Interfaces.Repositories
     {
         Task<IEnumerable<List>> GetAllListsWithItems();
         Task<List> GetListByIdWithItem(int id);
+        Task<PaginationResponse<List>> GetAllListsByFilter(FilterViewModel filter);
     }
 }

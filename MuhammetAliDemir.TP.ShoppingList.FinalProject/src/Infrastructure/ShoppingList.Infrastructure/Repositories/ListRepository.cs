@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingList.Application.Extensions;
 using ShoppingList.Application.Interfaces.Repositories;
-using ShoppingList.Application.ViewModels.Request.FilterViewModel;
-using ShoppingList.Application.ViewModels.Response.MainResponse;
+using ShoppingList.Application.ViewModels.Request.FilterViewModels;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Domain.Entities;
 using ShoppingList.Infrastructure.Persistence.DbContext;
 
@@ -23,7 +23,7 @@ namespace ShoppingList.Infrastructure.Repositories
         public async Task<List> GetListByIdWithItem(int id)
             => await _context.Lists.Include(l => l.Items).FirstOrDefaultAsync(z => z.Id == id);
 
-        public async Task<PaginationResponse<List>> GetAllUsersWithFilter(FilterViewModel filter)
+        public async Task<PaginationResponse<List>> GetAllListsByFilter(FilterViewModel filter)
         {
             var query = _context.Lists.Include(l => l.Items).AsQueryable();
 
@@ -40,6 +40,7 @@ namespace ShoppingList.Infrastructure.Repositories
                 query = query.Where(q => q.CompletedAt > filter.CompletedAt.Value);
 
             return await query.PaginateListAsync(filter.PageSize, filter.Page);
+
         }
     }
 }

@@ -4,6 +4,7 @@ using ShoppingList.Application.Features.ListFeatures.Commands.Create;
 using ShoppingList.Application.Features.ListFeatures.Commands.Delete;
 using ShoppingList.Application.Features.ListFeatures.Commands.Update;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetAll;
+using ShoppingList.Application.Features.ListFeatures.Queries.GetAllByFilter;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetById;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
 
@@ -18,10 +19,14 @@ namespace ShoppingList.Server.Controllers.v1
         public async Task<IActionResult> GetAllLists()
             => Ok(await Mediator.Send(new GetAllListsQuery()));
 
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetListById(int id)
             => Ok(await Mediator.Send(new GetListByIdQuery() { Id = id }));
+
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetAllListsByFilter([FromQuery] GetAllByFilterQuery query)
+            => Ok(await Mediator.Send(query));
 
 
         [HttpPut]

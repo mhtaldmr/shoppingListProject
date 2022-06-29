@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using ShoppingList.Application.Interfaces.Repositories;
-using ShoppingList.Application.ViewModels.Response.MainResponse;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Delete
 {

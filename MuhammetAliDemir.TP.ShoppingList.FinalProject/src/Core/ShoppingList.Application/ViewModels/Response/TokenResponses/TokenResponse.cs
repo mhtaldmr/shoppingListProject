@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.Application.ViewModels.Response.TokenResponse
+﻿namespace ShoppingList.Application.ViewModels.Response.TokenResponses
 {
     public class TokenResponse
     {

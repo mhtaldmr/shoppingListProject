@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.Application.ViewModels.Response.MainResponse
+﻿namespace ShoppingList.Application.ViewModels.Response.BaseResponses
 {
     public static class PaginationResponse
     {
@@ -10,14 +10,14 @@
     {
         public PaginationResponse(List<T> data, int pageSize, int currentPage, int totalCount)
         {
-            Data = data;
+            PaginatedData = data;
             PageSize = pageSize;
             CurrentPage = currentPage;
             TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
             TotalCount = totalCount;
         }
 
-        public List<T> Data { get; set; }
+        public List<T> PaginatedData { get; set; }
         public int PageSize { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace ShoppingList.Application.ViewModels.Response.MainResponse
+﻿namespace ShoppingList.Application.ViewModels.Response.BaseResponses
 {
     public static class Result
     {
