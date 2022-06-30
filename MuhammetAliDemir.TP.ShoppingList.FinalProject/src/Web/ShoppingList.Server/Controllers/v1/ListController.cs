@@ -51,9 +51,6 @@ namespace ShoppingList.Server.Controllers.v1
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteList(int id)
-        {
-            await Mediator.Send(new DeleteListCommand() { Id = id });
-            return NoContent();
-        }
+            => Ok(await Mediator.Send(new DeleteListCommand() { Id = id }));
     }
 }

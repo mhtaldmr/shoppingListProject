@@ -10,7 +10,7 @@ namespace ShoppingList.Application.Validators.ListQueryValidator
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("Please specify a valid Id for List!")
                 .NotNull().WithMessage("ListId can not be null!")
-                .NotEqual(0).WithMessage("ListId can not be Zero!");
+                .GreaterThanOrEqualTo(1).WithMessage("ListId must be valid!");
         }
     }
 }
