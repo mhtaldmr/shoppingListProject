@@ -16,6 +16,9 @@ namespace ShoppingList.Application.Validators.ListCommandValidator
             RuleFor(x => x.CategoryId)
                 .GreaterThanOrEqualTo(1).WithMessage("CategoryId must be a valid key!")
                 .LessThanOrEqualTo(5).WithMessage("CategoryId must be a valid key!");
+            RuleFor(x => x.UserId)
+                .NotEmpty().WithMessage("User must be Logged in!")
+                .NotNull().WithMessage("User can not be null!");
 
             //For items inside the lists //Nested objects validation
             RuleForEach(x => x.Items)

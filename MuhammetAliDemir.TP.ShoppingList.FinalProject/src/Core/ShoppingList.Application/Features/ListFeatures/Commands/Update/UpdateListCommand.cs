@@ -34,9 +34,9 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
                 return Result.Fail(new GetListResponse(), new KeyNotFoundException().Message);
 
             //Updating the list 
-            list.CategoryId = request.CategoryId;
-            list.Description = request.Description;
-            list.Title = request.Title;
+            list.CategoryId = request.CategoryId != default ? request.CategoryId : list.CategoryId;
+            list.Description = request.Description != default ? request.Description : list.Description;
+            list.Title = request.Title != default ? request.Title : list.Title;
             list.UpdatedAt = DateTime.Now;
 
             //Updating the items in the list
@@ -45,10 +45,10 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
                 var itemToUpdate = request.Items.SingleOrDefault(a => a.Id == item.Id);
                 if (itemToUpdate != null && item.Id == itemToUpdate.Id)
                 {
-                    item.Name = itemToUpdate.Name;
-                    item.Quantity = itemToUpdate.Quantity;
-                    item.UoMId = itemToUpdate.UoMId;
-                    item.IsChecked = itemToUpdate.IsChecked;
+                    item.Name = itemToUpdate.Name != default ? itemToUpdate.Name : item.Name;
+                    item.Quantity = itemToUpdate.Quantity != default ? itemToUpdate.Quantity : item.Quantity;
+                    item.UoMId = itemToUpdate.UoMId != default ? itemToUpdate.UoMId : item.UoMId;
+                    item.IsChecked = itemToUpdate.IsChecked != default ? itemToUpdate.IsChecked : item.IsChecked;
                     item.UpdatedAt = DateTime.Now;
                 }
             }

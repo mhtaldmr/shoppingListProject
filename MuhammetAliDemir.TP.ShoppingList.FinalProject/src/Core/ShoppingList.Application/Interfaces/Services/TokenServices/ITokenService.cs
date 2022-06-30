@@ -1,10 +1,10 @@
 ﻿using ShoppingList.Application.ViewModels.Response.TokenResponses;
-using System.Security.Claims;
+using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Application.Interfaces.Services.TokenServices
 {
     public interface ITokenService
     {
-        TokenResponse GetToken(List<Claim> claims);
+        TokenResponse GetToken(User user, IList<string> roles);
     }
 }

@@ -24,7 +24,7 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
         }
         public async Task<Result<GetListResponse>> Handle(PatchListCommand request, CancellationToken cancellationToken)
         {
-            var list = await _repository.GetListByIdWithItem(request.Id);
+            var list = await _repository.GetById(request.Id);
             if (list is null)
                 return Result.Fail(new GetListResponse(), new KeyNotFoundException().Message);
 

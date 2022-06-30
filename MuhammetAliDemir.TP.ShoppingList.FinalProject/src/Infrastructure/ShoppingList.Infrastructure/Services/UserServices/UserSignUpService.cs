@@ -34,7 +34,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
 
             if (!IsCreated.Succeeded)
                 return Result.Fail(signup, IsCreated.Errors.Select(x => x.Description).FirstOrDefault());
-            //throw new Exception("User couldnt created!");
+                //throw new Exception("User couldnt created!");
             return Result.Success(signup, "Successful!");
         }
     }

@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
+using ShoppingList.Application.Validators.UserValidator;
 using ShoppingList.Application.ViewModels.Request.UserViewModels;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Application.ViewModels.Response.TokenResponses;
 using ShoppingList.Domain.Entities;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace ShoppingList.Infrastructure.Services.UserServices
 {
@@ -25,6 +24,9 @@ namespace ShoppingList.Infrastructure.Services.UserServices
 
         public async Task<Result<TokenResponse>> LogIn(UserLogInViewModel login)
         {
+            var validator = new UserLogInViewModelValidator();
+            await validator.ValidateAsync(login);
+
             var existingUser = await _userManager.FindByEmailAsync(login.Email);
 
             if (existingUser == null)
@@ -33,36 +35,42 @@ namespace ShoppingList.Infrastructure.Services.UserServices
                 throw new InvalidOperationException("User is Locked");
 
             var isCorrect = await _userManager.CheckPasswordAsync(existingUser, login.Password);
-            await _signInManager.CheckPasswordSignInAsync(existingUser, login.Password, false);
+
 
             if (!isCorrect)
-            {
-                await _userManager.AccessFailedAsync(existingUser);
-                throw new InvalidOperationException("Access Failed");
+            { 
+                await AccessRightControl(existingUser);
+                throw new InvalidOperationException("Password is not correct");
             }
 
-            await _signInManager.SignInAsync(existingUser, false);
-
-            var claims = new List<Claim>
+            if (existingUser.AccessFailedCount < 3)
             {
-                new Claim("id", existingUser.Id),
-                new Claim(JwtRegisteredClaimNames.Email, existingUser.Email),
-                new Claim(JwtRegisteredClaimNames.Sub, existingUser.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            // Add roles as multiple claims
-            foreach (var role in await _userManager.GetRolesAsync(existingUser))
-            {
-                if (role is not null)
-                    claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+                existingUser.AccessFailedCount = 0;
+                await _userManager.UpdateAsync(existingUser);
             }
 
+            await _signInManager.CheckPasswordSignInAsync(existingUser, login.Password, false);
             await _signInManager.SignInAsync(existingUser, false);
 
-            var jwtToken = _tokenService.GetToken(claims);
+            //getting the token with roles and user
+            var roles = await _userManager.GetRolesAsync(existingUser);
+            var jwtToken = _tokenService.GetToken(existingUser, roles);
 
             return Result.Success(jwtToken, "Token is generated!.");
+        }
+
+
+        private async Task AccessRightControl(User existingUser)
+        {
+            existingUser.AccessFailedCount++;
+            await _userManager.UpdateAsync(existingUser);
+
+            if (existingUser.AccessFailedCount >= 3)
+            {
+                existingUser.LockoutEnabled = true;
+                await _userManager.UpdateAsync(existingUser);
+                throw new InvalidOperationException("User blocked");
+            }
         }
     }
 }

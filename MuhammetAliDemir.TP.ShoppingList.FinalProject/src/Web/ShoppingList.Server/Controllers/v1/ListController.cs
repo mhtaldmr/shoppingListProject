@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoppingList.Application.Extensions;
 using ShoppingList.Application.Features.ListFeatures.Commands.Create;
 using ShoppingList.Application.Features.ListFeatures.Commands.Delete;
 using ShoppingList.Application.Features.ListFeatures.Commands.Update;
@@ -7,6 +6,7 @@ using ShoppingList.Application.Features.ListFeatures.Queries.GetAll;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetAllByFilter;
 using ShoppingList.Application.Features.ListFeatures.Queries.GetById;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
+using System.Security.Claims;
 
 namespace ShoppingList.Server.Controllers.v1
 {
@@ -43,7 +43,8 @@ namespace ShoppingList.Server.Controllers.v1
         public async Task<IActionResult> CreateList([FromBody] ListCreateViewModel command)
         {
             var result = Mapper.Map<ListCreateViewModel, CreateListCommand>(command);
-            result.UserId = HttpContext.GetUserId();
+            result.UserId = User.FindFirstValue(ClaimTypes.Name);
+            //result.UserId = HttpContext.GetUserId();
             return Ok(await Mediator.Send(result));
         }
 
