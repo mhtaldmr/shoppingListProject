@@ -6,7 +6,13 @@ namespace ShoppingList.Server.Exceptions
     public class CustomGlobalException
     {
         private readonly RequestDelegate _next;
-        public CustomGlobalException(RequestDelegate next) => _next = next;
+        private readonly ILogger _logger;
+
+        public CustomGlobalException(RequestDelegate next, ILogger<CustomGlobalException> logger)
+        {
+            _next = next;
+            _logger = logger;
+        }
 
         public async Task Invoke(HttpContext context)
         {
@@ -24,9 +30,10 @@ namespace ShoppingList.Server.Exceptions
         {
             context.Response.ContentType = "application/json";
 
-            string message = "[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message;
+            string message = "\n\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message +"\n \n";
             
-            //Nlog file writer service will come here
+            //Nlog file writer service comes here
+            _logger.Log(LogLevel.Error, message);
 
             context.Response.StatusCode = e switch
             {

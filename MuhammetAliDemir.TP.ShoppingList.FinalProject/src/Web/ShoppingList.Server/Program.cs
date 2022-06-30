@@ -1,3 +1,4 @@
+using NLog.Web;
 using ShoppingList.Application.DependencyContainer;
 using ShoppingList.Infrastructure.DependencyContainer;
 using ShoppingList.Server.Extensions;
@@ -7,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+
+// NLog: Setup NLog for Dependency injection
+// if needed, other logger systems can be eleminated by uncommenting line below!
+//builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
