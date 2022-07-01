@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using ShoppingList.Consumer.Common.Interfaces.MongoDb;
-using ShoppingList.Consumer.Common.Models;
+using ShoppingList.Application.Interfaces.DbContext;
+using ShoppingList.Domain.Common;
+using ShoppingList.Domain.Entities;
 
-namespace ShoppingList.Consumer.Services.MongoDb
+namespace ShoppingList.Infrastructure.Persistence.DbContext
 {
     public class MongoDbService : IMongoDbService
     {

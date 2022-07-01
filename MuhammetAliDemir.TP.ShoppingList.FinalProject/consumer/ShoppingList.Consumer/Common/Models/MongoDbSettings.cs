@@ -1,6 +1,6 @@
 ﻿namespace ShoppingList.Consumer.Common.Models
 {
-    public class ShoppingListDatabaseSettings
+    public class MongoDbSettings
     {
         public string ConnectionString { get; set; } = null!;
         public string DatabaseName { get; set; } = null!;

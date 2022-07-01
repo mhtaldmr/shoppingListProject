@@ -16,7 +16,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<IMongoDbService, MongoDbService>();
 
         //registering the mongodb configs
-        services.Configure<ShoppingListDatabaseSettings>(
+        services.Configure<MongoDbSettings>(
             configuration.GetSection("ShoppingListMongoDb"));
 
         //calling the worker background service

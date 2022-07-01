@@ -5,11 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ShoppingList.Application.Interfaces.DbContext;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.Interfaces.Services.RabbitMq;
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.Interfaces.UnitOfWork;
+using ShoppingList.Domain.Common;
 using ShoppingList.Domain.Entities;
 using ShoppingList.Infrastructure.Persistence.DbContext;
 using ShoppingList.Infrastructure.Repositories;
@@ -25,10 +27,13 @@ namespace ShoppingList.Infrastructure.DependencyContainer
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            //DbContext configuration
+            //MSSQL DB configuration
             var connectionString = configuration.GetConnectionString("Default");
             services.AddDbContext<ShoppingListDbContext>(options => options.UseSqlServer(connectionString));
 
+            //MongoDB configuration
+            services.Configure<MongoDbSettings>(
+                configuration.GetSection("ShoppingListMongoDb"));
 
             //Interface contracts
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -41,6 +46,7 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPublisherService, PublisherService>();
             services.AddScoped<IRabbitMqConnection, RabbitMqConnection>();
+            services.AddSingleton<IMongoDbService, MongoDbService>();
 
             //Identity configurations
             services.AddIdentity<User, IdentityRole>(opt =>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingList.Application.Interfaces.DbContext;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 
 namespace ShoppingList.Server.Controllers
@@ -28,5 +29,10 @@ namespace ShoppingList.Server.Controllers
 
         protected IUserSignUpService SignUpService => _signUpService ??= HttpContext.RequestServices.GetRequiredService<IUserSignUpService>();
         protected IUserLogInService LogInService => _logInService ??= HttpContext.RequestServices.GetRequiredService<IUserLogInService>();
+
+        //MongoDB service
+        private IMongoDbService _mongoDb;
+        protected IMongoDbService MongoDbService => _mongoDb??= HttpContext.RequestServices.GetRequiredService<IMongoDbService>();
+
     }
 }
