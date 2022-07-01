@@ -17,7 +17,6 @@ namespace ShoppingList.Application.Validators.ListCommandValidator
                 .NotNull().WithMessage("Id can not be null!")
                 .NotEqual(0).WithMessage("ListId can not be Zero!");
             RuleFor(x => x.IsCompleted)
-                .NotEmpty().WithMessage("Please specify an Id for value!")
                 .NotNull().WithMessage("IsCompleted can not be null!");
         }
     }
