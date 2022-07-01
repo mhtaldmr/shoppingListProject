@@ -44,7 +44,6 @@ namespace ShoppingList.Server.Controllers.v1
         {
             var result = Mapper.Map<ListCreateViewModel, CreateListCommand>(command);
             result.UserId = User.FindFirstValue(ClaimTypes.Name);
-            //result.UserId = HttpContext.GetUserId();
             return Ok(await Mediator.Send(result));
         }
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FluentValidation;
+using Newtonsoft.Json;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using System.Net;
 
@@ -31,20 +32,22 @@ namespace ShoppingList.Server.Exceptions
         {
             context.Response.ContentType = "application/json";
 
-            string message = "\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message +"\n\n";
-            
-            //Nlog file writer service comes here
-            _logger.Log(LogLevel.Error, message);
-
             context.Response.StatusCode = e switch
             {
                 KeyNotFoundException => (int)HttpStatusCode.NotFound,
                 ArgumentException => (int)HttpStatusCode.BadRequest,
                 LockRecursionException => (int)HttpStatusCode.Forbidden,
                 InvalidOperationException => (int)HttpStatusCode.BadRequest,
+                ValidationException => (int)HttpStatusCode.BadRequest,
                 _ => (int)HttpStatusCode.InternalServerError
             };
-            var result = JsonConvert.SerializeObject(Result.Fail(new {}, e.Message), Formatting.Indented);
+
+            string message = "\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message + "\n\n";
+
+            //Nlog file writer service comes here
+            _logger.Log(LogLevel.Error, message);
+
+            var result = JsonConvert.SerializeObject(Result.Fail(new { }, e.Message), Formatting.Indented);
             return context.Response.WriteAsync(result);
         }
     }

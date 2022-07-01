@@ -13,7 +13,7 @@ namespace ShoppingList.Consumer.Common.Models
         public int CategoryId { get; set; }
         public string UserId { get; set; }
         public bool IsCompleted { get; set; }
-        public DateTime? CompletedAt { get; set; }
+        public DateTime CompletedAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public ICollection<ItemArch> Items { get; set; }

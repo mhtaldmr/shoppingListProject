@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingList.Application.Interfaces.Repositories;
-using ShoppingList.Domain.Common;
 using ShoppingList.Infrastructure.Persistence.DbContext;
 
 namespace ShoppingList.Infrastructure.Repositories
