@@ -55,6 +55,7 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             //List services
             services.AddScoped<IListCreateService, ListCreateService>();
             services.AddScoped<IListDeleteService, ListDeleteService>();
+            services.AddScoped<IListUpdateService, ListUpdateService>();
 
 
             //Identity configurations

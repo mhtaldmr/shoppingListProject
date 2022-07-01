@@ -4,6 +4,7 @@ using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices;
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
 {
@@ -18,46 +19,11 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
 
     public class UpdateListCommandHandler : IRequestHandler<UpdateListCommand, Result<GetListResponse>>
     {
-        private readonly IListRepository _repository;
-        private readonly IMapper _mapper;
-
-        public UpdateListCommandHandler(IListRepository repository,IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
+        private readonly IListUpdateService _listUpdateService;
+        public UpdateListCommandHandler(IListRepository repository,IMapper mapper, IListUpdateService listUpdateService)
+            => _listUpdateService = listUpdateService;
 
         public async Task<Result<GetListResponse>> Handle(UpdateListCommand request, CancellationToken cancellationToken)
-        {
-            var list = await _repository.GetListByIdWithItem(request.Id);
-            if (list is null)
-                return Result.Fail(new GetListResponse(), new KeyNotFoundException().Message);
-
-            //Updating the list 
-            list.CategoryId = request.CategoryId != default ? request.CategoryId : list.CategoryId;
-            list.Description = request.Description != default ? request.Description : list.Description;
-            list.Title = request.Title != default ? request.Title : list.Title;
-            list.UpdatedAt = DateTime.Now;
-
-            //Updating the items in the list
-            foreach (var item in list.Items)
-            {
-                var itemToUpdate = request.Items.SingleOrDefault(a => a.Id == item.Id);
-                if (itemToUpdate != null && item.Id == itemToUpdate.Id)
-                {
-                    item.Name = itemToUpdate.Name != default ? itemToUpdate.Name : item.Name;
-                    item.Quantity = itemToUpdate.Quantity != default ? itemToUpdate.Quantity : item.Quantity;
-                    item.UoMId = itemToUpdate.UoMId != default ? itemToUpdate.UoMId : item.UoMId;
-                    item.IsChecked = itemToUpdate.IsChecked != default ? itemToUpdate.IsChecked : item.IsChecked;
-                    item.UpdatedAt = DateTime.Now;
-                }
-            }
-
-            //Update result
-            await _repository.Update(list);
-            //return the last value
-            var result = _mapper.Map<GetListResponse>(list);
-            return Result.Success(result, "Successful");
-        }
+            => Result.Success(await _listUpdateService.UpdateList(request), "Successful");
     }
 }
