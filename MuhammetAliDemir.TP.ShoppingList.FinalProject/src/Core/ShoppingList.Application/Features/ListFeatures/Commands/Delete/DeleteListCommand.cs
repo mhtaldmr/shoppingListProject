@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ShoppingList.Application.Interfaces.Repositories;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Delete
@@ -11,20 +11,13 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Delete
 
     public class DeleteListCommandHandler : IRequestHandler<DeleteListCommand, Result<int>>
     {
-        private readonly IListRepository _repository;
-
-        public DeleteListCommandHandler(IListRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IListDeleteService _listDeleteService;
+        public DeleteListCommandHandler(IListDeleteService listDeleteService)
+            => _listDeleteService = listDeleteService;
 
         public async Task<Result<int>> Handle(DeleteListCommand request, CancellationToken cancellationToken)
         {
-            var list = await _repository.GetListByIdWithItem(request.Id);
-            if (list is null)
-                return Result.Fail(0, new KeyNotFoundException().Message);
-
-            await _repository.Delete(list );
+            await _listDeleteService.DeleteList(request);
             return Result.Success(request.Id, "Provided key deleted!");
         }
     }

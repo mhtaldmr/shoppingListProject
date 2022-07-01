@@ -38,18 +38,24 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             services.Configure<MongoDbSettings>(
                 configuration.GetSection("ShoppingListMongoDb"));
 
-            //Interface contracts
+            //Application interfaces
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IListRepository, ListRepository>();
             services.AddScoped<IUomRepository, UomRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //Identity
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserSignUpService, UserSignUpService>();
             services.AddScoped<IUserLogInService, UserLogInService>();
+            //Jwt token
             services.AddScoped<ITokenService, TokenService>();
+            //RabbitMq
             services.AddScoped<IPublisherService, PublisherService>();
             services.AddScoped<IRabbitMqConnection, RabbitMqConnection>();
+            //List services
             services.AddScoped<IListCreateService, ListCreateService>();
+            services.AddScoped<IListDeleteService, ListDeleteService>();
+
 
             //Identity configurations
             services.AddIdentity<User, IdentityRole>(opt =>
