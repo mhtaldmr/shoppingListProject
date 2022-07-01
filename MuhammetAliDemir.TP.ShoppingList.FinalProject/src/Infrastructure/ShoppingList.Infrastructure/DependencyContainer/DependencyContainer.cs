@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 using ShoppingList.Application.Interfaces.DbContext;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.Interfaces.Services.RabbitMq;
-using ShoppingList.Application.Interfaces.Services.RepositoryServices;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 using ShoppingList.Application.Interfaces.Services.TokenServices;
 using ShoppingList.Application.Interfaces.Services.UserServices;
 using ShoppingList.Application.Interfaces.UnitOfWork;
@@ -17,7 +17,7 @@ using ShoppingList.Domain.Entities;
 using ShoppingList.Infrastructure.Persistence.DbContext;
 using ShoppingList.Infrastructure.Repositories;
 using ShoppingList.Infrastructure.Services.RabbitMq;
-using ShoppingList.Infrastructure.Services.RepositoryServices;
+using ShoppingList.Infrastructure.Services.RepositoryServices.ListServices;
 using ShoppingList.Infrastructure.Services.TokenServices;
 using ShoppingList.Infrastructure.Services.UserServices;
 using ShoppingList.Infrastructure.UnitOfWorks;
@@ -57,6 +57,7 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             services.AddScoped<IListDeleteService, ListDeleteService>();
             services.AddScoped<IListUpdateService, ListUpdateService>();
             services.AddScoped<IListPatchService, ListPatchService>();
+            services.AddScoped<IListGetAllService, ListGetAllService>();
 
 
             //Identity configurations

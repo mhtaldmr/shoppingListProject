@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ShoppingList.Application.Interfaces.Repositories;
-using ShoppingList.Application.Interfaces.Services.RepositoryServices;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Application.ViewModels.Response.ListResponses;

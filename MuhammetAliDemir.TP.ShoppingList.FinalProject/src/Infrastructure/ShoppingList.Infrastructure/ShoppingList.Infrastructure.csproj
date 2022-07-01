@@ -27,4 +27,9 @@
     <ProjectReference Include="..\..\Core\ShoppingList.Application\ShoppingList.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\RepositoryServices\CategoryServices\" />
+    <Folder Include="Services\RepositoryServices\UomServices\" />
+  </ItemGroup>
+
 </Project>

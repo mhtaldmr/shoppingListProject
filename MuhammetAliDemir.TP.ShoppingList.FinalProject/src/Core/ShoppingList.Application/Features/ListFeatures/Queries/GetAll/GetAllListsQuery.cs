@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
-using ShoppingList.Application.Interfaces.Repositories;
-using ShoppingList.Application.ViewModels.Response.ListResponses;
+﻿using MediatR;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
+using ShoppingList.Application.ViewModels.Response.ListResponses;
 
 namespace ShoppingList.Application.Features.ListFeatures.Queries.GetAll
 {
@@ -10,22 +9,11 @@ namespace ShoppingList.Application.Features.ListFeatures.Queries.GetAll
 
     public class GetAllListsQueryHandler : IRequestHandler<GetAllListsQuery, Result<ICollection<GetListResponse>>>
     {
-        private readonly IListRepository _repository;
-        private readonly IMapper _mapper;
+        private readonly IListGetAllService _listGetAllService;
+        public GetAllListsQueryHandler(IListGetAllService listGetAllService)
+            => _listGetAllService = listGetAllService;
 
-        public GetAllListsQueryHandler(IListRepository repository, IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
         public async Task<Result<ICollection<GetListResponse>>> Handle(GetAllListsQuery request, CancellationToken cancellationToken)
-        {
-            var list = await _repository.GetAllListsWithItems();
-            if (list is null)
-                throw new ArgumentNullException();
-
-            var result = _mapper.Map<ICollection<GetListResponse>>(list);
-            return Result.Success(result, $"Successful! Total : {result.Count} list!");
-        }
+            => Result.Success(await _listGetAllService.GetAll(request), "Successful");
     }
 }

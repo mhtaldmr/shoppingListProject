@@ -2,10 +2,10 @@
 using ShoppingList.Application.Features.ListFeatures.Commands.Update;
 using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.Interfaces.Services.RabbitMq;
-using ShoppingList.Application.Interfaces.Services.RepositoryServices;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
 
-namespace ShoppingList.Infrastructure.Services.RepositoryServices
+namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
 {
     public class ListPatchService : IListPatchService
     {

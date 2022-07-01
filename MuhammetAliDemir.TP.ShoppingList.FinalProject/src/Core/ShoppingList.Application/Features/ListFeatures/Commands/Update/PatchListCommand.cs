@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ShoppingList.Application.Interfaces.Services.RepositoryServices;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
 

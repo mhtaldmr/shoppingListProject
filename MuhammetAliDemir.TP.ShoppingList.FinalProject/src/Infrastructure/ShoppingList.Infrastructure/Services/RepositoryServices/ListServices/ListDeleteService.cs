@@ -1,8 +1,8 @@
 ﻿using ShoppingList.Application.Features.ListFeatures.Commands.Delete;
 using ShoppingList.Application.Interfaces.Repositories;
-using ShoppingList.Application.Interfaces.Services.RepositoryServices;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 
-namespace ShoppingList.Infrastructure.Services.RepositoryServices
+namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
 {
     public class ListDeleteService : IListDeleteService
     {

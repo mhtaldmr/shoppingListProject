@@ -4,7 +4,7 @@ using ShoppingList.Application.Interfaces.Repositories;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
-using ShoppingList.Application.Interfaces.Services.RepositoryServices;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
 {
