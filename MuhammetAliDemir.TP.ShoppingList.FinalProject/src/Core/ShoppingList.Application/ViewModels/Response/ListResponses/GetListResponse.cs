@@ -2,9 +2,18 @@
 
 namespace ShoppingList.Application.ViewModels.Response.ListResponses
 {
-    public class GetListResponse
+    public class GetListResponse : ListResponse
     {
         public int Id { get; set; }
+    }
+
+    public class GetListResponseMessage : ListResponse
+    {
+        public string UserId { get; set; }
+    }
+
+    public class ListResponse
+    {
         public string Title { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; set; }

@@ -20,6 +20,7 @@ namespace ShoppingList.Application.Mappings
 
             //Mapping the domain to user response
             CreateMap<List, GetListResponse>().ReverseMap();
+            CreateMap<List, GetListResponseMessage>();
 
             //Mapping the user input to domain
             CreateMap<CreateListCommand, List>().ReverseMap();

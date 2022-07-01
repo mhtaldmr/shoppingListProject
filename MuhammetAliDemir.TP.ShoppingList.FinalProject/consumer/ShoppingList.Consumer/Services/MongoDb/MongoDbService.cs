@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using ShoppingList.Consumer.Common.Interfaces.MongoDb;
 using ShoppingList.Consumer.Common.Models;
 
-namespace ShoppingList.Consumer.Services.MongoDbservice
+namespace ShoppingList.Consumer.Services.MongoDb
 {
     public class MongoDbService : IMongoDbService
     {

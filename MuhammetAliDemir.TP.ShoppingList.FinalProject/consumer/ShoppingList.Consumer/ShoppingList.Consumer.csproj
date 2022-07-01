@@ -13,8 +13,4 @@
     <PackageReference Include="MongoDB.Driver" Version="2.16.1" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Core\ShoppingList.Domain\ShoppingList.Domain.csproj" />
-  </ItemGroup>
 </Project>

@@ -1,7 +1,8 @@
+using ShoppingList.Consumer;
 using ShoppingList.Consumer.Common.Interfaces.MongoDb;
 using ShoppingList.Consumer.Common.Interfaces.RabbitMq;
 using ShoppingList.Consumer.Common.Models;
-using ShoppingList.Consumer.Services.MongoDbservice;
+using ShoppingList.Consumer.Services.MongoDb;
 using ShoppingList.Consumer.Services.RabbitMq;
 
 IHost host = Host.CreateDefaultBuilder(args)
@@ -9,35 +10,18 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         IConfiguration configuration = hostContext.Configuration;
 
-        //services.AddHostedService<Worker>();
+        //registering the interfaces
         services.AddTransient<IRabbitMqConnection, RabbitMqConnection>();
         services.AddTransient<IConsumerService, ConsumerService>();
         services.AddSingleton<IMongoDbService, MongoDbService>();
+
+        //registering the mongodb configs
         services.Configure<ShoppingListDatabaseSettings>(
             configuration.GetSection("ShoppingListMongoDb"));
+
+        //calling the worker background service
+        services.AddHostedService<Worker>();
     })
     .Build();
-
-//Calling the consumer service.
-var _consumer = host.Services.GetRequiredService<IConsumerService>();
-var _listService = host.Services.GetRequiredService<IMongoDbService>();
-
-ICollection<ItemArch> item;
-var list = new ListArch()
-{
-    Title = "Newlist",
-    Description = "Mongodb trials"
-};
-
-//await _listService.CreateAsync(list);
-
-var x = _listService.GetAsync();
-foreach(var y in x.Result)
-Console.WriteLine(y.Id);
-
-//Giving the neccessary context
-//IsAcnowledge can be made true. Therefore, messages will be automatically acknowledged.
-_consumer.Consume(queueName: "direct.email", IsAcknowledgeAuto: false);
-
 
 await host.RunAsync();

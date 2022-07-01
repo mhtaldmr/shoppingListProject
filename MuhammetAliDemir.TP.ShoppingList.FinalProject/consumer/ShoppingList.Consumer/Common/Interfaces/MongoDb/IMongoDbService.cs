@@ -6,8 +6,8 @@ namespace ShoppingList.Consumer.Common.Interfaces.MongoDb
     {
         Task<List<ListArch>> GetAsync();
         Task<ListArch> GetAsync(string id);
-        Task CreateAsync(ListArch newListArch);
-        Task UpdateAsync(string id, ListArch updatedListArch);
+        Task CreateAsync(ListArch ListArch);
+        Task UpdateAsync(string id, ListArch ListArch);
         Task RemoveAsync(string id);
     }
 }
