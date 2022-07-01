@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ShoppingList.Application.Interfaces.Repositories;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
@@ -19,24 +20,11 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Create
 
     public class CreateListCommandHandler : IRequestHandler<CreateListCommand, Result<GetListResponse>>
     {
-        private readonly IMapper _mapper;
-        private readonly IListRepository _repository;
+        private readonly IListCreateService _listCreateService;
+        public CreateListCommandHandler(IListCreateService listCreateService)
+            => _listCreateService = listCreateService;
 
-        public CreateListCommandHandler(IMapper mapper, IListRepository repository)
-        {
-            _mapper = mapper;
-            _repository = repository;
-        }
         public async Task<Result<GetListResponse>> Handle(CreateListCommand request, CancellationToken cancellationToken)
-        {
-            //mapping the request model to domain model
-            var list = _mapper.Map<List>(request);
-            //create the list
-            await _repository.Create(list);
-
-            //returning the user response
-            var result = _mapper.Map<GetListResponse>(list);
-            return Result.Success(result, "Successful");
-        }
+            => Result.Success(await _listCreateService.CreateList(request), "Successful");
     }
 }
