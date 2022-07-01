@@ -1,6 +1,5 @@
-﻿using AutoMapper;
-using MediatR;
-using ShoppingList.Application.Interfaces.Repositories;
+﻿using MediatR;
+using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServices;
 using ShoppingList.Application.ViewModels.Request.FilterViewModels;
 using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
@@ -13,24 +12,12 @@ namespace ShoppingList.Application.Features.ListFeatures.Queries.GetAllByFilter
 
     public class GetAllByFilterQueryHandler : IRequestHandler<GetAllByFilterQuery, Result<PaginationResponse<GetListResponse>>>
     {
-        private readonly IListRepository _repository;
-        private readonly IMapper _mapper;
+        private readonly IListGetByFilterService _listGetByFilterService;
 
-        public GetAllByFilterQueryHandler(IListRepository repository, IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
+        public GetAllByFilterQueryHandler(IListGetByFilterService listGetByFilterService)
+            => _listGetByFilterService = listGetByFilterService;
 
         public async Task<Result<PaginationResponse<GetListResponse>>> Handle(GetAllByFilterQuery request, CancellationToken cancellationToken)
-        {
-            var list = await _repository.GetAllListsByFilter(request);
-            if (list is null)
-                throw new ArgumentNullException();
-
-            var mappedList = _mapper.Map<List<GetListResponse>>(list.PaginatedData);
-            var result = new PaginationResponse<GetListResponse>(mappedList, list.PageSize, list.CurrentPage, list.TotalCount);
-            return Result.Success(result, "Successful");
-        }
+            => Result.Success(await _listGetByFilterService.GetListByFilter(request), "Successful");
     }
 }

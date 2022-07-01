@@ -58,6 +58,8 @@ namespace ShoppingList.Infrastructure.DependencyContainer
             services.AddScoped<IListUpdateService, ListUpdateService>();
             services.AddScoped<IListPatchService, ListPatchService>();
             services.AddScoped<IListGetAllService, ListGetAllService>();
+            services.AddScoped<IListGetByIdService, ListGetByIdService>();
+            services.AddScoped<IListGetByFilterService, ListGetByFilterService>();
 
 
             //Identity configurations
