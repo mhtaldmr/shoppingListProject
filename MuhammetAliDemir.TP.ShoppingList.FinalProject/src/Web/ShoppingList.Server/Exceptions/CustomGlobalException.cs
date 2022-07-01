@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using System.Net;
 
 namespace ShoppingList.Server.Exceptions
@@ -30,7 +31,7 @@ namespace ShoppingList.Server.Exceptions
         {
             context.Response.ContentType = "application/json";
 
-            string message = "\n\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message +"\n \n";
+            string message = "\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message +"\n\n";
             
             //Nlog file writer service comes here
             _logger.Log(LogLevel.Error, message);
@@ -43,7 +44,7 @@ namespace ShoppingList.Server.Exceptions
                 InvalidOperationException => (int)HttpStatusCode.BadRequest,
                 _ => (int)HttpStatusCode.InternalServerError
             };
-            var result = JsonConvert.SerializeObject(new { error = e.Message }, Formatting.Indented);
+            var result = JsonConvert.SerializeObject(Result.Fail(new {}, e.Message), Formatting.Indented);
             return context.Response.WriteAsync(result);
         }
     }

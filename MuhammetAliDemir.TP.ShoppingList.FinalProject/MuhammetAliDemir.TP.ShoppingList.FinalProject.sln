@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.Application", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "consumer", "consumer", "{9480B0B9-2C31-43CC-8D29-507EB020F41B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Consumer", "consumer\ShoppingList.Consumer\ShoppingList.Consumer.csproj", "{84C03D7E-856B-4463-9D74-395EF8D30C4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.Consumer", "consumer\ShoppingList.Consumer\ShoppingList.Consumer.csproj", "{84C03D7E-856B-4463-9D74-395EF8D30C4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

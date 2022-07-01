@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 
 namespace ShoppingList.Server.Controllers.v1
 {
@@ -8,6 +9,6 @@ namespace ShoppingList.Server.Controllers.v1
     {
         [HttpGet]
         public async Task<IActionResult> GetAllLists()
-            => Ok(await MongoDbService.GetAsync());
+            => Ok(Result.Success(await MongoDbService.GetAsync(), "Successful"));
     }
 }
