@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Features.ListFeatures.Commands.Create;
 using ShoppingList.Application.Features.ListFeatures.Commands.Delete;
 using ShoppingList.Application.Features.ListFeatures.Commands.Update;
@@ -13,6 +14,7 @@ namespace ShoppingList.Server.Controllers.v1
     [Route("api/lists")]
     [ApiController]
     //[Authorize(Roles = "Admin")]
+    [Authorize]
     public class ListController : BaseApiController
     {
         [HttpGet]

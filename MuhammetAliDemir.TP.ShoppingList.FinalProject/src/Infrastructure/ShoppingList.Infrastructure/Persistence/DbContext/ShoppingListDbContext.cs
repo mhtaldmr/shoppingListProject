@@ -19,10 +19,6 @@ namespace ShoppingList.Infrastructure.Persistence.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-
-            //builder.Entity<ListItem>()
-            //    .HasKey(li => new { li.ListId, li.ItemId });
         }
     }
 }

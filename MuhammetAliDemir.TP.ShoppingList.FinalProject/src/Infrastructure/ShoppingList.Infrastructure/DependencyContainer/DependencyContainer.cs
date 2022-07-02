@@ -25,6 +25,7 @@ using ShoppingList.Infrastructure.Services.RepositoryServices.UomServices;
 using ShoppingList.Infrastructure.Services.TokenServices;
 using ShoppingList.Infrastructure.Services.UserServices;
 using ShoppingList.Infrastructure.UnitOfWorks;
+using System;
 using System.Text;
 
 namespace ShoppingList.Infrastructure.DependencyContainer
@@ -34,8 +35,15 @@ namespace ShoppingList.Infrastructure.DependencyContainer
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             //MSSQL DB configuration
-            var connectionString = configuration.GetConnectionString("Default");
-            services.AddDbContext<ShoppingListDbContext>(options => options.UseSqlServer(connectionString));
+            //var connectionStringMssql = configuration.GetConnectionString("MssqlDefault");
+            //services.AddDbContext<ShoppingListDbContext>(options => options.UseSqlServer(connectionStringMssql));
+
+            //Postgre DB Configuration
+            var connectionStringPostgre = configuration.GetConnectionString("PostgreDefault");
+            services.AddDbContext<ShoppingListDbContext>(options => options.UseNpgsql(connectionStringPostgre));
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+
 
             //MongoDB configuration
             services.AddSingleton<IMongoDbService, MongoDbService>();
