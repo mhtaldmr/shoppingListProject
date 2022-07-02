@@ -19,11 +19,12 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
 
         public async Task<GetListResponse> GetListById(GetListByIdQuery request)
         {
-            var list = await _repository.GetListByIdWithItem(request.Id);
-            if (list is null)
+            var lists = await _repository.GetAllListsByUsers(request.UserId);
+            var listToShow = lists.FirstOrDefault(l => l.Id == request.Id);
+            if (listToShow is null)
                 throw new KeyNotFoundException();
 
-            return _mapper.Map<GetListResponse>(list);
+            return _mapper.Map<GetListResponse>(listToShow);
         }
     }
 }

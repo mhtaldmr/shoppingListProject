@@ -12,11 +12,13 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
 
         public async Task DeleteList(DeleteListCommand request)
         {
-            var list = await _repository.GetListByIdWithItem(request.Id);
-            if (list is null)
+            var lists = await _repository.GetAllListsByUsers(request.UserId);
+            var listToDelete = lists.FirstOrDefault(l => l.Id == request.Id);
+
+            if (listToDelete is null)
                 throw new KeyNotFoundException();
 
-            await _repository.Delete(list);
+            await _repository.Delete(listToDelete);
         }
     }
 }

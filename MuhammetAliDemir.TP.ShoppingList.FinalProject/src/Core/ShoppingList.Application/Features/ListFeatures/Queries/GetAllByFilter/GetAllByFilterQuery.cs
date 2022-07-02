@@ -8,6 +8,7 @@ namespace ShoppingList.Application.Features.ListFeatures.Queries.GetAllByFilter
 {
     public class GetAllByFilterQuery : FilterViewModel, IRequest<Result<PaginationResponse<GetListResponse>>>
     {
+        public string UserId { get; set; }
     }
 
     public class GetAllByFilterQueryHandler : IRequestHandler<GetAllByFilterQuery, Result<PaginationResponse<GetListResponse>>>

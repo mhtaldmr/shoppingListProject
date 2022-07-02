@@ -31,6 +31,7 @@ namespace ShoppingList.Infrastructure.Services.UserServices
             };
 
             var IsCreated = await _userManager.CreateAsync(newUser, signup.Password);
+            await _userManager.AddToRoleAsync(newUser, "user");
 
             if (!IsCreated.Succeeded)
                 return Result.Fail(signup, IsCreated.Errors.Select(x => x.Description).FirstOrDefault());

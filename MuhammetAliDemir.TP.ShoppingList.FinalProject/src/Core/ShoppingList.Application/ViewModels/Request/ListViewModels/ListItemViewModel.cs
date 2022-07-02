@@ -1,6 +1,6 @@
 ﻿namespace ShoppingList.Application.ViewModels.Request.ListViewModels
 {
-    public class ListItemActionViewModel : ListItemViewModel
+    public class ListItemUpdateViewModel : ListItemViewModel
     {
         public int Id { get; set; }
     }

@@ -12,12 +12,12 @@ namespace ShoppingList.Infrastructure.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", "k3ed51e5-6a86-428b-a474-6c019aa5e42f", "user", "USER" });
+                values: new object[] { "asfbe9c0-aa65-4a58-b417-00b45444e342", "k3ed51e5-6a86-428b-a474-6c019aa5e42f", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "asfbe9c0-aa65-4a58-b417-00b45444e342", "e3bb51e5-6a86-428b-a474-6c019aa5ef90", "admin", "ADMIN" });
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", "e3bb51e5-6a86-428b-a474-6c019aa5ef90", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",

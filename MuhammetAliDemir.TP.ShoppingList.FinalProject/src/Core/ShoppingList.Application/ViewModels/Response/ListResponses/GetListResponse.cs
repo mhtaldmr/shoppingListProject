@@ -21,6 +21,6 @@ namespace ShoppingList.Application.ViewModels.Response.ListResponses
         public DateTime? CompletedAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public ICollection<ListItemActionViewModel> Items { get; set; }
+        public ICollection<ListItemUpdateViewModel> Items { get; set; }
     }
 }

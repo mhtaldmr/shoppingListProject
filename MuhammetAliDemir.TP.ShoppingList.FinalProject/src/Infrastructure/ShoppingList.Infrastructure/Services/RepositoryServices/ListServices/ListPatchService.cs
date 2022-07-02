@@ -21,26 +21,27 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
         }
         public async Task<GetListResponse> PatchList(PatchListCommand request)
         {
-            var list = await _repository.GetListByIdWithItem(request.Id);
-            if (list is null)
+            var lists = await _repository.GetAllListsByUsers(request.UserId);
+            var listToPatch = lists.FirstOrDefault(l => l.Id == request.Id);
+            if (listToPatch is null)
                 throw new KeyNotFoundException();
 
-            list.IsCompleted = request.IsCompleted;
+            listToPatch.IsCompleted = request.IsCompleted;
 
-            if (list.IsCompleted)
-                list.CompletedAt = DateTime.Now;
-            list.UpdatedAt = DateTime.Now;
+            if (listToPatch.IsCompleted)
+                listToPatch.CompletedAt = DateTime.Now;
+            listToPatch.UpdatedAt = DateTime.Now;
 
             //Update the completed field
-            await _repository.Update(list);
+            await _repository.Update(listToPatch);
 
-            var message = _mapper.Map<GetListResponseMessage>(list);
+            var message = _mapper.Map<GetListResponseMessage>(listToPatch);
 
-            if (list.IsCompleted)
+            if (listToPatch.IsCompleted)
                 _publisherService.Publish(message, "direct.list", "direct.list1");
 
             //return the result
-            return _mapper.Map<GetListResponse>(list);
+            return _mapper.Map<GetListResponse>(listToPatch);
         }
     }
 }

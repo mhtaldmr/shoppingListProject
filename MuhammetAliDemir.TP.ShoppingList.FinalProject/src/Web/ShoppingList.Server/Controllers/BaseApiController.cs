@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Interfaces.DbContext;
 using ShoppingList.Application.Interfaces.Services.UserServices;
+using System.Security.Claims;
 
 namespace ShoppingList.Server.Controllers
 {
@@ -33,6 +34,10 @@ namespace ShoppingList.Server.Controllers
         //MongoDB service
         private IMongoDbService _mongoDb;
         protected IMongoDbService MongoDbService => _mongoDb??= HttpContext.RequestServices.GetRequiredService<IMongoDbService>();
+
+        //Current User ID
+        private string _userId;
+        protected string UserId => _userId ?? User.FindFirstValue(ClaimTypes.Name);
 
     }
 }

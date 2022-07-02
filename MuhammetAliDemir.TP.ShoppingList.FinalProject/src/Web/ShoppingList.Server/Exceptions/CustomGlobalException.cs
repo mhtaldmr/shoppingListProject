@@ -42,7 +42,7 @@ namespace ShoppingList.Server.Exceptions
                 _ => (int)HttpStatusCode.InternalServerError
             };
 
-            string message = "\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message + "\n\n";
+            string message = "\n\n[Error] HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message : " + e.Message + "\n\n";
 
             //Nlog file writer service comes here
             _logger.Log(LogLevel.Error, message);

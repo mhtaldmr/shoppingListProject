@@ -5,7 +5,10 @@ using ShoppingList.Application.ViewModels.Response.ListResponses;
 
 namespace ShoppingList.Application.Features.ListFeatures.Queries.GetAll
 {
-    public record GetAllListsQuery : IRequest<Result<ICollection<GetListResponse>>>;
+    public class GetAllListsQuery : IRequest<Result<ICollection<GetListResponse>>>
+    {
+        public string UserId { get; set; }
+    }
 
     public class GetAllListsQueryHandler : IRequestHandler<GetAllListsQuery, Result<ICollection<GetListResponse>>>
     {

@@ -19,18 +19,19 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
 
         public async Task<GetListResponse> UpdateList(UpdateListCommand request)
         {
-            var list = await _repository.GetListByIdWithItem(request.Id);
-            if (list is null)
+            var lists = await _repository.GetAllListsByUsers(request.UserId);
+            var listToUpdate = lists.FirstOrDefault(l => l.Id == request.Id);
+            if (listToUpdate is null)
                 throw new KeyNotFoundException();
 
             //Updating the list 
-            list.CategoryId = request.CategoryId != default ? request.CategoryId : list.CategoryId;
-            list.Description = request.Description != default ? request.Description : list.Description;
-            list.Title = request.Title != default ? request.Title : list.Title;
-            list.UpdatedAt = DateTime.Now;
+            listToUpdate.CategoryId = request.CategoryId != default ? request.CategoryId : listToUpdate.CategoryId;
+            listToUpdate.Description = request.Description != default ? request.Description : listToUpdate.Description;
+            listToUpdate.Title = request.Title != default ? request.Title : listToUpdate.Title;
+            listToUpdate.UpdatedAt = DateTime.Now;
 
             //Updating the items in the list
-            foreach (var item in list.Items)
+            foreach (var item in listToUpdate.Items)
             {
                 var itemToUpdate = request.Items.SingleOrDefault(a => a.Id == item.Id);
                 if (itemToUpdate != null && item.Id == itemToUpdate.Id)
@@ -44,9 +45,9 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
             }
 
             //Update result
-            await _repository.Update(list);
+            await _repository.Update(listToUpdate);
             //return the last value
-            return _mapper.Map<GetListResponse>(list);
+            return _mapper.Map<GetListResponse>(listToUpdate);
         }
     }
 }

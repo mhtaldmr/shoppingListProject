@@ -8,13 +8,10 @@ using ShoppingList.Application.Interfaces.Services.RepositoryServices.ListServic
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Update
 {
-    public class UpdateListCommand : IRequest<Result<GetListResponse>>
+    public class UpdateListCommand : ListUpdateViewModel,IRequest<Result<GetListResponse>>
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int CategoryId { get; set; } = 1;
-        public ICollection<ListItemActionViewModel> Items { get; set; }
+        public string  UserId { get; set; }
     }
 
     public class UpdateListCommandHandler : IRequestHandler<UpdateListCommand, Result<GetListResponse>>

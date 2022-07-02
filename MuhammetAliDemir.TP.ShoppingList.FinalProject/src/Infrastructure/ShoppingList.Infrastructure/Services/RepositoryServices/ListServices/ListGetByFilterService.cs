@@ -22,7 +22,7 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
         {
             var list = await _repository.GetAllListsByFilter(request);
             if (list is null)
-                throw new ArgumentNullException();
+                throw new KeyNotFoundException();
 
             var mappedList = _mapper.Map<List<GetListResponse>>(list.PaginatedData);
             return new PaginationResponse<GetListResponse>(mappedList, list.PageSize, list.CurrentPage, list.TotalCount);

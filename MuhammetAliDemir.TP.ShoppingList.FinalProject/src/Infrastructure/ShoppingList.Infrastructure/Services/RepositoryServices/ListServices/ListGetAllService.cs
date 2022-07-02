@@ -18,9 +18,9 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
         }
         public async Task<ICollection<GetListResponse>> GetAll(GetAllListsQuery request)
         {
-            var list = await _repository.GetAllListsWithItems();
-            if (list is null)
-                throw new ArgumentNullException();
+            var list = await _repository.GetAllListsByUsers(request.UserId);
+            if (!list.Any() || list is null)
+                throw new KeyNotFoundException();
 
             return _mapper.Map<ICollection<GetListResponse>>(list);
         }

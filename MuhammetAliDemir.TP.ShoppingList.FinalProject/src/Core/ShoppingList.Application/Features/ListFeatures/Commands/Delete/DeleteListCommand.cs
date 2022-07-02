@@ -7,6 +7,7 @@ namespace ShoppingList.Application.Features.ListFeatures.Commands.Delete
     public class DeleteListCommand : IRequest<Result<int>>
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
     }
 
     public class DeleteListCommandHandler : IRequestHandler<DeleteListCommand, Result<int>>

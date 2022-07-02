@@ -6,13 +6,9 @@ using ShoppingList.Application.ViewModels.Response.ListResponses;
 
 namespace ShoppingList.Application.Features.ListFeatures.Commands.Create
 {
-    public class CreateListCommand : IRequest<Result<GetListResponse>>
+    public class CreateListCommand : ListCreateViewModel, IRequest<Result<GetListResponse>>
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int CategoryId { get; set; } = 1;
         public string UserId { get; set; }
-        public ICollection<ListItemCreateViewModel> Items { get; set; }
     }
 
     public class CreateListCommandHandler : IRequestHandler<CreateListCommand, Result<GetListResponse>>

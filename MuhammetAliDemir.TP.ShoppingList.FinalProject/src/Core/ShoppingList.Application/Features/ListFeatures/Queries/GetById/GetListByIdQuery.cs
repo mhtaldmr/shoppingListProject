@@ -8,6 +8,7 @@ namespace ShoppingList.Application.Features.ListFeatures.Queries.GetById
     public class GetListByIdQuery : IRequest<Result<GetListResponse>>
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
     }
 
     public class GetListByIdQueryHandler : IRequestHandler<GetListByIdQuery, Result<GetListResponse>>
