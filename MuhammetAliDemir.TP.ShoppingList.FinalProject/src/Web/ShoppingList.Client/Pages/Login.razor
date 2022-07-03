@@ -1,0 +1,80 @@
+﻿@page "/login"
+@inject IHttpClientFactory ClientFactory
+@inject ProtectedLocalStorage Storage
+@inject NavigationManager UriHelper
+@inject UserLoginData UserLoginData
+
+<section class="vh-90">
+    <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-md-7 col-lg-5 col-xl-5">
+                <EditForm Model="@User" OnValidSubmit="@Submit">
+                <DataAnnotationsValidator />
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="Email">Email address</label>
+                        <InputText type="email" @bind-Value="User.Email" id="Email" class="form-control form-control-lg" />
+                    <ValidationMessage For="() => User.Email" />
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="Password">Password</label>
+                        <InputText type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}"
+                        title="Password must at least 8 characters."
+                        id="Password" @bind-Value="User.Password" class="form-control form-control-lg" />
+                        <ValidationMessage For="() => User.Password" />
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
+
+                <ValidationSummary />
+                </EditForm>
+                    @if (_errors != "" && _errors is not null)
+                    {
+                        <br />
+                        <br />
+                        <h3 style="color:red;">@_errors</h3>
+                    }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    private readonly UserLogIn User = new();
+    private string _errors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => _errors = "");
+    }
+
+    private async Task Submit()
+    {
+        _errors = "";
+        var client = ClientFactory.CreateClient();
+        var response = await client.PostAsJsonAsync("https://localhost:5070/users/login", User);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string result = await response.Content.ReadAsStringAsync();
+            JObject resultObject = JObject.Parse(result);
+
+            string token = resultObject.SelectToken("data").SelectToken("accessToken").Value<string>();
+            await Storage.SetAsync("token", token);
+            UserLoginData.IsLoggedIn = true;
+            UriHelper.NavigateTo("/");
+        }
+        else
+        {
+            string result = await response.Content.ReadAsStringAsync();
+            JObject resultObject = JObject.Parse(result);
+            _errors = resultObject.SelectToken("errors").Value<string>();
+
+        }
+    }
+}

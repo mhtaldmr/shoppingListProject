@@ -1,8 +1,24 @@
 ﻿@page "/"
+@inject UserLoginData UserLoginData
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hi, there!</h1>
 
-Welcome to your new Shopping List app.
-Please select your action on the left menu!
+@if(UserLoginData.IsLoggedIn)
+{
+	<h1>Welcome to Shopping List App!</h1>
+	<br />
+	<p>
+		Welcome to your new Shopping List app.
+		Please select your action on the left menu!
+	</p>
+}
+else
+{
+	<h1>Hello, there!</h1>
+	<br />
+	<p>
+		You must log in before using the app.
+		If you dont have any account, please Sign up first!
+	</p>
+}

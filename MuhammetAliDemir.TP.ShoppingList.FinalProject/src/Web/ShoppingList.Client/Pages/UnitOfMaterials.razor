@@ -1,9 +1,9 @@
-﻿@page "/categories"
-@inherits CategoryComponent
+﻿@page "/unitofmaterials"
+@inherits UomComponent
 @inject ProtectedLocalStorage _storage
 
-<h3>Categories</h3>
-@if( Category  == null)
+<h3>Unit Of Materials</h3>
+@if( Units == null)
 {
 	<p>You have to login first!..</p>
 }
@@ -11,9 +11,9 @@ else
 {
 	<h3 class="mb-5"></h3>
 
-	@if(Category != null )
+	@if(Units != null )
 	{
-		var listRowList = new BaseResponse<CategoryResponse>();
+		var listRowList = new BaseResponse<UomResponse>();
 
 		<div>
 			<div class="col-md-9">
@@ -21,16 +21,16 @@ else
 					<thead>
 						<tr>
 							<th scope="col">Id</th>
-							<th scope="col">Name</th>
+							<th scope="col">UoMCode</th>
 							<th scope="col">Description</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach(var item in Category.Data)
+						@foreach(var item in Units.Data)
 						{
 							<tr>
 								<td>@item.Id</td>             
-								<td>@item.Name</td>                  
+								<td>@item.UoMCode</td>                  
 								<td>@item.Description</td>                    
 							</tr>                    
 						}

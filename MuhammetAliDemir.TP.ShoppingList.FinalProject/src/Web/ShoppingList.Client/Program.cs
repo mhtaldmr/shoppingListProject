@@ -1,5 +1,6 @@
 using ShoppingList.Client.Data.User;
 using ShoppingList.Client.Services.Category;
+using ShoppingList.Client.Services.UnitOfMaterials;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<UserLoginData>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUomService, UomService>();
 
 
 // Add services to the container.
