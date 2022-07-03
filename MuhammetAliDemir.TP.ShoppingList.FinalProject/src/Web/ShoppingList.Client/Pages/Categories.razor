@@ -1,0 +1,70 @@
+﻿@page "/categories"
+@inherits CategoryComponent
+@inject ProtectedLocalStorage _storage
+
+<h3>Categories</h3>
+@if( Category  == null)
+{
+	<p>You have to login first!..</p>
+}
+else
+{
+	<h3 class="mb-5"></h3>
+
+	@if(Category != null )
+	{
+		var listRowList = new BaseResponse<CategoryResponse>();
+
+		<div>
+			<div class="col-md-9">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Id</th>
+							<th scope="col">Name</th>
+							<th scope="col">Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach(var item in Category.Data)
+						{
+							<tr>
+								<td>@item.Id</td>             
+								<td>@item.Name</td>                  
+								<td>@item.Description</td>                    
+							</tr>                    
+						}
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-9">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Message</th>
+						</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>@Category.Message</td>	
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-9">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Error</th>
+						</tr>
+						</thead>
+					<tbody>
+						<tr>
+							<td>@Category.Error</td>	
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
+}

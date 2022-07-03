@@ -1,0 +1,40 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager UriHelper
+@inject ProtectedLocalStorage Storage
+@inject UserLoginData UserLoginData
+
+<PageTitle>ShoppingList</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            @if (!UserLoginData.IsLoggedIn)
+            {      
+                <a href="/login" class=" btn btn-primary">Log in</a>
+                <a href="/signup" class=" btn btn-primary">Sign up</a>
+            }
+            else
+            {
+                <a @onclick="SignOut" class=" btn btn-danger">Log out</a>
+            }
+        </div>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+
+@code{
+
+    public async Task SignOut()
+    {
+        await Storage.DeleteAsync("token");
+        UserLoginData.IsLoggedIn = false;
+        UriHelper.NavigateTo("/");
+    }
+}
