@@ -1,10 +1,10 @@
 ﻿@page "/"
-@inject UserLoginData UserLoginData
+@inject UserLoginData _user
 
 <PageTitle>Index</PageTitle>
 
 
-@if(UserLoginData.IsLoggedIn)
+@if(_user.IsLoggedIn)
 {
 	<h1>Welcome to Shopping List App!</h1>
 	<br />

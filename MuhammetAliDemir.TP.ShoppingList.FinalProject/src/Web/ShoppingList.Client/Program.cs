@@ -1,5 +1,6 @@
 using ShoppingList.Client.Data.User;
 using ShoppingList.Client.Services.Category;
+using ShoppingList.Client.Services.List;
 using ShoppingList.Client.Services.UnitOfMaterials;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<UserLoginData>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUomService, UomService>();
+builder.Services.AddScoped<IListService, ListService>();
 
 
 // Add services to the container.

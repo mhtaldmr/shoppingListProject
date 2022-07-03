@@ -1,9 +1,9 @@
-﻿@page "/categories"
-@inherits CategoryComponent
+﻿@page "/lists"
+@inherits ListComponent
 @inject UserLoginData _user
 
-<h3>Categories</h3>
-@if( Category  == null)
+<h3>Lists</h3>
+@if( List  == null)
 {
 	@if(!_user.IsLoggedIn)
 	{
@@ -20,9 +20,9 @@ else
 {
 	<h3 class="mb-5"></h3>
 
-	@if(Category != null )
+	@if(List != null )
 	{
-		var listRowList = new BaseResponse<CategoryResponse>();
+		var listRowList = new BaseResponse<ListResponse>();
 
 		<div>
 			<div class="col-md-9">
@@ -30,16 +30,16 @@ else
 					<thead>
 						<tr>
 							<th scope="col">Id</th>
-							<th scope="col">Name</th>
+							<th scope="col">Title</th>
 							<th scope="col">Description</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach(var item in Category.Data)
+						@foreach(var item in List.Data)
 						{
 							<tr>
 								<td>@item.Id</td>             
-								<td>@item.Name</td>                  
+								<td>@item.Title</td>                  
 								<td>@item.Description</td>                    
 							</tr>                    
 						}

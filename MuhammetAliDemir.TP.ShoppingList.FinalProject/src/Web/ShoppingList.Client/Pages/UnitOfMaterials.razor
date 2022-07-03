@@ -1,11 +1,20 @@
 ﻿@page "/unitofmaterials"
 @inherits UomComponent
-@inject ProtectedLocalStorage _storage
+@inject UserLoginData _user
 
 <h3>Unit Of Materials</h3>
 @if( Units == null)
 {
-	<p>You have to login first!..</p>
+	@if(!_user.IsLoggedIn)
+	{
+		<br />
+		<p>You have to login first!..</p>
+	}
+	else
+	{
+		<br />
+		<p>Loading!..</p>		
+	}
 }
 else
 {

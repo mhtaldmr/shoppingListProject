@@ -1,8 +1,8 @@
 ﻿@page "/login"
-@inject IHttpClientFactory ClientFactory
-@inject ProtectedLocalStorage Storage
-@inject NavigationManager UriHelper
-@inject UserLoginData UserLoginData
+@inject IHttpClientFactory _clientFactory
+@inject ProtectedLocalStorage _storage
+@inject NavigationManager _uriHelper
+@inject UserLoginData _user
 
 <section class="vh-90">
     <div class="container py-5 h-100">
@@ -56,7 +56,7 @@
     private async Task Submit()
     {
         _errors = "";
-        var client = ClientFactory.CreateClient();
+        var client = _clientFactory.CreateClient();
         var response = await client.PostAsJsonAsync("https://localhost:5070/users/login", User);
 
         if (response.IsSuccessStatusCode)
@@ -65,9 +65,9 @@
             JObject resultObject = JObject.Parse(result);
 
             string token = resultObject.SelectToken("data").SelectToken("accessToken").Value<string>();
-            await Storage.SetAsync("token", token);
-            UserLoginData.IsLoggedIn = true;
-            UriHelper.NavigateTo("/");
+            await _storage.SetAsync("token", token);
+            _user.IsLoggedIn = true;
+            _uriHelper.NavigateTo("/");
         }
         else
         {
