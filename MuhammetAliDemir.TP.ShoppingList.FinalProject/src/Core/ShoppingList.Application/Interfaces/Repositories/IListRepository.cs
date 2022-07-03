@@ -8,7 +8,6 @@ namespace ShoppingList.Application.Interfaces.Repositories
     {
         Task<IEnumerable<List>> GetAllListsWithItems();
         Task<IEnumerable<List>> GetAllListsByUsers(string userId);
-        Task<List> GetListByIdWithItem(int id);
         Task<PaginationResponse<List>> GetAllListsByFilter(GetAllByFilterQuery filter);
     }
 }

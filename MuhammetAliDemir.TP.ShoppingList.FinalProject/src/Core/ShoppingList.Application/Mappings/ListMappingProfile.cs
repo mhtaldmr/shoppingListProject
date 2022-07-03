@@ -17,12 +17,17 @@ namespace ShoppingList.Application.Mappings
             CreateMap<ListItemViewModel, Item>().ReverseMap();
             CreateMap<ListItemCreateViewModel, Item>().ReverseMap();
             CreateMap<ListItemUpdateViewModel, Item>().ReverseMap();
+            CreateMap<Item, ListItemResponse>()
+                .ForMember(x => x.UoMCode, opt => opt.MapFrom(z => z.UoM.UoMCode))
+                .ReverseMap();
 
             //Mapping the user input to domain
             CreateMap<ListViewModel, List>().ReverseMap();
 
             //Mapping the domain to user response
-            CreateMap<List, GetListResponse>().ReverseMap();
+            CreateMap<List, GetListResponse>()
+                .ForMember(x => x.CategoryName, opt => opt.MapFrom(z => z.Category.Name))
+                .ReverseMap();
             CreateMap<List, GetListResponseMessage>();
 
             //Mapping the user input to domain

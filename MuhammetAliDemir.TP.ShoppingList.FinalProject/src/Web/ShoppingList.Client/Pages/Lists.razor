@@ -3,6 +3,7 @@
 @inject UserLoginData _user
 
 <h3>Lists</h3>
+<hr />
 @if( List  == null)
 {
 	@if(!_user.IsLoggedIn)
@@ -18,33 +19,70 @@
 }
 else
 {
-	<h3 class="mb-5"></h3>
+	<h3 class="mb-10"></h3>
 
 	@if(List != null )
 	{
 		var listRowList = new BaseResponse<ListResponse>();
 
 		<div>
-			<div class="col-md-9">
-				<table class="table table-striped">
+			<div class="col-md-11">
+
+			@foreach(var list in List.Data)
+			{
+				<h3>@list.Title</h3>
+				<hr />
+				<table class="table table-hover table-success">
 					<thead>
-						<tr>
+						<tr class="thead-light">
 							<th scope="col">Id</th>
 							<th scope="col">Title</th>
 							<th scope="col">Description</th>
+							<th scope="col">Category Name</th>
+							<th scope="col">Created At</th>
+							<th scope="col">Updated At</th>
+							<th scope="col">IsCompleted</th>
+							<th scope="col">Completed At</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach(var item in List.Data)
-						{
-							<tr>
-								<td>@item.Id</td>             
-								<td>@item.Title</td>                  
-								<td>@item.Description</td>                    
+							<tr class="">
+								<td>@list.Id</td>             
+								<td>@list.Title</td>                  
+								<td>@list.Description</td>                    
+								<td>@list.CategoryName</td>                    
+								<td>@list.CreatedAt</td>                    
+								<td>@list.UpdatedAt</td>                    
+								<td>@list.IsCompleted</td>                    
+								<td>@list.CompletedAt</td>
 							</tr>                    
-						}
 					</tbody>
+					</table>
+					<table class="table table-sm table-hover table-active table-striped">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Id</th>
+									<th scope="col">Name</th>
+									<th scope="col">Quantity</th>
+									<th scope="col">UoM Code</th>
+									<th scope="col">IsChecked</th>
+								</tr>
+							</thead>
+							<tbody>
+							@foreach(var item in list.Items)
+							{
+								<tr class="">
+									<td>@item.Id</td>             
+									<td>@item.Name</td>                  
+									<td>@item.Quantity</td>                    
+									<td>@item.UoMCode</td>                    
+									<td>@item.IsChecked</td>                    
+								</tr>                    
+							}
+							</tbody>
 				</table>
+				<br /><br /><br />
+				}
 			</div>
 		</div>
 	}

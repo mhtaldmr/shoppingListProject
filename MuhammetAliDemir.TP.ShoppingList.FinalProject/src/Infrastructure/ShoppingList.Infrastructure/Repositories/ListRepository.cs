@@ -21,18 +21,28 @@ namespace ShoppingList.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<List>> GetAllListsWithItems()
-            => await _context.Lists.Include(l => l.Items).ToListAsync();
-        public async Task<List> GetListByIdWithItem(int id)
-            => await _context.Lists.Include(l => l.Items).FirstOrDefaultAsync(z => z.Id == id);
-
+            => await _context.Lists
+                .Include(l => l.Category)
+                .Include(l => l.Items)
+                    .ThenInclude(i => i.UoM)
+                .ToListAsync();
 
         public async Task<IEnumerable<List>> GetAllListsByUsers(string userId)
         {
             var existingUser = await _context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
             var role = await _userManager.GetRolesAsync(existingUser);
             if (role.Contains("admin"))
-                return await _context.Lists.Include(l => l.Items).ToListAsync();
-            return await _context.Lists.Include(l => l.Items).Where(u => u.UserId == userId).ToListAsync();
+                return await _context.Lists
+                    .Include(l => l.Category)
+                    .Include(l => l.Items)
+                        .ThenInclude(i => i.UoM)
+                    .ToListAsync();
+            return await _context.Lists
+                .Include(l => l.Category)
+                .Include(l => l.Items)
+                    .ThenInclude(i => i.UoM)
+                .Where(u => u.UserId == userId)
+                .ToListAsync();
         }
 
 
@@ -40,10 +50,18 @@ namespace ShoppingList.Infrastructure.Repositories
         {
             var existingUser = await _context.Users.Where(u => u.Id == filter.UserId).FirstOrDefaultAsync();
             var role = await _userManager.GetRolesAsync(existingUser);
-            var query = _context.Lists.Include(l => l.Items).Where(u => u.UserId == filter.UserId).AsQueryable();
+            var query = _context.Lists
+                .Include(l => l.Category)
+                .Include(l => l.Items)
+                    .ThenInclude(i => i.UoM)
+                .Where(u => u.UserId == filter.UserId)
+                .AsQueryable();
 
             if (role.Contains("admin"))
-                query = _context.Lists.Include(l => l.Items).AsQueryable();
+                query = _context.Lists
+                    .Include(l => l.Category)
+                    .Include(l => l.Items)
+                        .ThenInclude(i => i.UoM).AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filter.Title))
                 query = query.Where(q => q.Title.ToLower().Contains(filter.Title.ToLower()));

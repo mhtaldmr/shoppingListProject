@@ -16,4 +16,13 @@
         public int Quantity { get; set; } = 0;
         public int UoMId { get; set; } = 1;
     }
+
+    public class ListItemResponse
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
+        public int Quantity { get; set; }
+        public string UoMCode { get; set; }
+    }
 }
