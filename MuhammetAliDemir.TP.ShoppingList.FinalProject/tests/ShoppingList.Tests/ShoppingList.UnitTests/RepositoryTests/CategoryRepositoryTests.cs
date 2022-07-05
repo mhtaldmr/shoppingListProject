@@ -7,8 +7,6 @@ using ShoppingList.Application.Mappings;
 using ShoppingList.Application.ViewModels.Response.CategoryResponses;
 using ShoppingList.Domain.Entities;
 using ShoppingList.Infrastructure.Services.RepositoryServices.CategoryServices;
-using System.Text;
-using System.Text.Json;
 using Xunit;
 
 namespace ShoppingList.Tests.ShoppingList.UnitTests.RepositoryTests
@@ -42,7 +40,7 @@ namespace ShoppingList.Tests.ShoppingList.UnitTests.RepositoryTests
             _categoryRepositoryMock.Setup(u => u.GetAll()).ReturnsAsync(() => categoryToGet);
 
             byte[] cache = null;
-            _cacheMock.Setup(c => c.GetAsync(_cacheKey,default).Result).Returns(() => cache);
+            _cacheMock.Setup(c => c.GetAsync(_cacheKey, default).Result).Returns(() => cache);
 
             //Act
             var category = await _categoryGetService.GetAllCategory(request);
@@ -52,6 +50,23 @@ namespace ShoppingList.Tests.ShoppingList.UnitTests.RepositoryTests
             Assert.Equal(2, category.Count());
         }
 
+
+        [Fact]
+        public async Task GetAll_ShouldThrowException_WhenThereIsNoCategory()
+        {
+            //Arrange
+            var request = new GetAllCategoriesQuery();
+            List<Category> categoryToGet = null;
+            _categoryRepositoryMock.Setup(u => u.GetAll()).ReturnsAsync(() => categoryToGet);
+
+            byte[] cache = null;
+            _cacheMock.Setup(c => c.GetAsync(_cacheKey, default).Result).Returns(() => cache);
+
+            //Act
+            //Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                async ()=> await _categoryGetService.GetAllCategory(request));
+        }
 
     }
 }

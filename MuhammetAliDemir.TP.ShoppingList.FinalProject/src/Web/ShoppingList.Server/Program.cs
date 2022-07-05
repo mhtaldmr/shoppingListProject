@@ -39,3 +39,7 @@ app.UseCustomeGlobalException();
 app.MapControllers();
 
 app.Run();
+
+
+//for using the test project..
+public partial class Program { }
