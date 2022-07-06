@@ -9,6 +9,8 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
 {
     public class ListPatchService : IListPatchService
     {
+        private const string _queueName = "direct.list";
+        private const string _routingKey = "direct.list1";
         private readonly IListRepository _repository;
         private readonly IPublisherService _publisherService;
         private readonly IMapper _mapper;
@@ -38,7 +40,7 @@ namespace ShoppingList.Infrastructure.Services.RepositoryServices.ListServices
             var message = _mapper.Map<GetListResponseMessage>(listToPatch);
 
             if (listToPatch.IsCompleted)
-                _publisherService.Publish(message, "direct.list", "direct.list1");
+                _publisherService.Publish(message, queueName: _queueName , routingKey: _routingKey);
 
             //return the result
             return _mapper.Map<GetListResponse>(listToPatch);

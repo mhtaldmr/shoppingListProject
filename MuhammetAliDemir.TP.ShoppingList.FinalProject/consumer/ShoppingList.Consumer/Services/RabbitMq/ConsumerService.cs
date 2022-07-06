@@ -3,7 +3,6 @@ using RabbitMQ.Client.Events;
 using ShoppingList.Consumer.Common.Interfaces.MongoDb;
 using ShoppingList.Consumer.Common.Interfaces.RabbitMq;
 using ShoppingList.Consumer.Common.Models;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -26,7 +25,6 @@ namespace ShoppingList.Consumer.Services.RabbitMq
 
                 //foreach (PropertyInfo p in message.GetType().GetProperties())
                 //    Console.WriteLine(p.Name + " : " + p.GetValue(message));
-                //Console.WriteLine();
             };
 
             channel.BasicConsume(

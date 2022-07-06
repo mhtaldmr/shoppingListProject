@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using ShoppingList.Application.ViewModels.Request.ListViewModels;
+using ShoppingList.Application.ViewModels.Response.BaseResponses;
 using ShoppingList.Application.ViewModels.Response.ListResponses;
 using Xunit;
 
@@ -44,20 +45,18 @@ namespace ShoppingList.Tests.ShoppingList.IntegrationTests.ListIntegraqtionTests
             });
 
             //Act
-            var response = await _testClient.GetAsync("api/lists");
+            var response = await _testClient.GetAsync($"api/lists/{createdList.Id}");
 
             //Assert
-
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-
-            var returnedList = await response.Content.ReadAsAsync<GetListResponse>();
-            returnedList.Should().NotBeNull();
-            //returnedList.Title.Should().BeEquivalentTo("Test Title");
+            var result = await response.Content.ReadAsAsync<Result<GetListResponse>>();
+            result.Data.Should().NotBeNull();
+            result.Data.Title.Should().BeEquivalentTo(createdList.Title);
         }
 
 
         [Fact]
-        public async Task GetAllLists_WithoutAnyList_ReturnsEmptyResonse()
+        public async Task GetAllLists_ReturnAListOfLists_WhenDBIsNotEmpty()
         {
             //Arrange
             await AuthenticateAsync();
@@ -67,7 +66,9 @@ namespace ShoppingList.Tests.ShoppingList.IntegrationTests.ListIntegraqtionTests
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            response.Content.ReadAsAsync<IEnumerable<GetListResponse>>().Should().BeNull();
+            var result = await response.Content.ReadAsAsync<Result<IEnumerable<GetListResponse>>>();
+            result.Should().NotBeNull();
+            result.Data.Count().Should().BeGreaterThan(0);
         }
     }
 }

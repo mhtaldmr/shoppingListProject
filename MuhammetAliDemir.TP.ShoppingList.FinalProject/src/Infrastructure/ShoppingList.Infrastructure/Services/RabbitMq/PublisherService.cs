@@ -8,6 +8,8 @@ namespace ShoppingList.Infrastructure.Services.RabbitMq
 {
     public class PublisherService : IPublisherService
     {
+        private const string _exchangeName = "direct.list";
+        private const string _exchangeType = "direct";
         private readonly IRabbitMqConnection _rabbitMqConnection;
         public PublisherService(IRabbitMqConnection rabbitMqConnection) => _rabbitMqConnection = rabbitMqConnection;
 
@@ -19,8 +21,8 @@ namespace ShoppingList.Infrastructure.Services.RabbitMq
 
             //Creating exchanges and queues
             channel.ExchangeDeclare(
-                exchange: "direct.list",
-                type: "direct",
+                exchange: _exchangeName,
+                type: _exchangeType,
                 durable: false,
                 autoDelete: false);
 
@@ -33,7 +35,7 @@ namespace ShoppingList.Infrastructure.Services.RabbitMq
             //Binding the exchanges and queues created into eachother with routingkey
             channel.QueueBind(
                 queue: queueName,
-                exchange: "direct.list",
+                exchange: _exchangeName,
                 routingKey: routingKey);
 
             //User is an object, for that changing that into Bytes..
@@ -41,7 +43,7 @@ namespace ShoppingList.Infrastructure.Services.RabbitMq
 
             //At last, we are publishing the message.
             channel.BasicPublish(
-                exchange: "direct.list",
+                exchange: _exchangeName,
                 routingKey: routingKey,
                 basicProperties: null,
                 body: messageBody);
